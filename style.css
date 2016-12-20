@@ -1,0 +1,28 @@
+/*
+Theme Name: Biology Department Responsive Theme
+Theme URI: http://biology.cos.ucf.edu
+Description: An updated Responsive / HTML5 theme for the UCF College of Sciences: Biology department website.
+Author: COS Web Team
+Author URI: http://www.cos.ucf.edu/it
+Version: 2.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: dark, responsive, custom menu (optional), grey, custom widgets
+
+*/
+
+@import "css/reset.css";
+@import "css/layout.less"; /* importing layout.less */
+@import "css/elements.less"; /* importing elements.less */
+@import "webfonts/fonts.css";
+
+/* Required theme elements */
+.wp-caption{ }
+.wp-caption-text{
+    font-size: 10px;
+    text-align: left;
+}
+.wp-caption img{	}
+.sticky{ }
+.gallery-caption{ }
+.bypostauthor{ }
