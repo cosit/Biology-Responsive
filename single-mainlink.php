@@ -25,7 +25,7 @@ get_header(); ?>
 				?>
 				
 				<footer>
-					<?php edit_post_link( __( 'Edit Main Link', 'starkers' ), '', '' ); ?>
+					<?php edit_post_link( __( 'Edit Main Link', 'biology-department' ), '', '' ); ?>
 				</footer>
 			</article>
 		</div>

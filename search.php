@@ -16,7 +16,7 @@ get_header(); ?>
 
 		<div id="search_results" class="innerContent fullwidth">
 <?php if (have_posts()) : ?>
-			<header><h1><?php printf( __( 'Search Results for: <span>%s</span>', 'starkers' ), '' . get_search_query() . '' ); ?></h1></header>
+			<header><h1><?php printf( __( 'Search Results for: <span>%s</span>', 'biology-department' ), '' . get_search_query() . '' ); ?></h1></header>
 			
 			<?php while (have_posts()) : the_post(); 
 
@@ -55,8 +55,8 @@ get_header(); ?>
 				get_template_part( 'loop', 'search' );
 			?>
 <?php else : ?>
-		<h1><?php printf( __( 'Nothing Found for: <span>%s</span>', 'starkers' ), '' . get_search_query() . ''); ?></h1>
-			<h2><?php _e( 'Sorry, but nothing matched your search criteria. Please try again with some different keywords.', 'starkers' ); ?></h2>
+		<h1><?php printf( __( 'Nothing Found for: <span>%s</span>', 'biology-department' ), '' . get_search_query() . ''); ?></h1>
+			<h2><?php _e( 'Sorry, but nothing matched your search criteria. Please try again with some different keywords.', 'biology-department' ); ?></h2>
 <?php endif; ?>
 		</div> <!-- End innerContent -->
 	</div> <!-- End Wrap -->

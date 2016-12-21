@@ -21,7 +21,7 @@ get_header(); ?>
 	<div class="innerContent">			
 		<article id="post<?php the_ID(); ?>" <?php post_class(); ?>>
 		<header>
-			<h1><?php 	printf( __( 'Category Archives: %s', 'starkers' ), '' . single_cat_title( '', false ) . '' );	?></h1>
+			<h1><?php 	printf( __( 'Category Archives: %s', 'biology-department' ), '' . single_cat_title( '', false ) . '' );	?></h1>
 		</header>
 		<?php
 			$category_description = category_description();

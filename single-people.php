@@ -21,7 +21,7 @@ get_header(); ?>
 				<?php show_person( get_the_ID()); ?>
 				
 					<footer>
-						<?php edit_post_link( __( 'Edit Person', 'starkers' ), '', '' ); ?>
+						<?php edit_post_link( __( 'Edit Person', 'biology-department' ), '', '' ); ?>
 					</footer>
 				</article>
 		</div>

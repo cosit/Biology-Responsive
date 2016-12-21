@@ -24,14 +24,14 @@
 			</li>
 
 			<li>
-				<h2><?php _e( 'Archives', 'starkers' ); ?></h2>
+				<h2><?php _e( 'Archives', 'biology-department' ); ?></h2>
 				<ul>
 					<?php wp_get_archives( 'type=monthly' ); ?>
 				</ul>
 			</li>
 
 			<li>
-				<h2><?php _e( 'Meta', 'starkers' ); ?></h2>
+				<h2><?php _e( 'Meta', 'biology-department' ); ?></h2>
 				<ul>
 					<?php wp_register(); ?>
 					<li><?php wp_loginout(); ?></li>

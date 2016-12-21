@@ -30,10 +30,10 @@ Template Name: Undergraduate Classes
 
 					<?php cos_show_classes('undergraduate'); ?>
 							
-					<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'starkers' ), 'after' => '</nav>' ) ); ?>
+					<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'biology-department' ), 'after' => '</nav>' ) ); ?>
 							
 				<footer>
-					<?php edit_post_link( __( 'Edit Page', 'starkers' ), '', '' ); ?>
+					<?php edit_post_link( __( 'Edit Page', 'biology-department' ), '', '' ); ?>
 				</footer>
 			</article>
 		</div>

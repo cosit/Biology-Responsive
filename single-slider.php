@@ -28,7 +28,7 @@ get_header(); ?>
 				?>
 				
 				<footer>
-					<?php edit_post_link( __( 'Edit Slider', 'starkers' ), '', '' ); ?>
+					<?php edit_post_link( __( 'Edit Slider', 'biology-department' ), '', '' ); ?>
 				</footer>
 			</article>
 		</div>

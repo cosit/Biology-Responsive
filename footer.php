@@ -54,16 +54,16 @@
 			<div class="dept_list">
 				<h3><span><a href="http://ucf.edu">UCF</a></span> <a href="http://www.cos.ucf.edu">College of Sciences</a></h3>
 				<ul>
-					<li><a href="http://anthropology.cos.ucf.edu" target="_blank">Anthropology</a></li>
-					<li><a href="http://biology.cos.ucf.edu" target="_blank">Biology</a></li>
-					<li><a href="http://chemistry.cos.ucf.edu" target="_blank">Chemistry</a></li>
-					<li><a href="http://communication.cos.ucf.edu" target="_blank">Communication</a></li>
-					<li><a href="http://math.cos.ucf.edu" target="_blank">Mathematics</a></li>
-					<li><a href="http://physics.cos.ucf.edu" target="_blank">Physics</a></li>
-					<li><a href="http://politicalscience.cos.ucf.edu" target="_blank">Political Science</a></li>
-					<li><a href="http://psychology.cos.ucf.edu" target="_blank">Psychology</a></li>
-					<li><a href="http://sociology.cos.ucf.edu" target="_blank">Sociology</a></li>
-					<li><a href="http://statistics.cos.ucf.edu" target="_blank">Statistics</a></li>
+					<li><a href="http://sciences.ucf.edu/anthropology/" target="_blank">Anthropology</a></li>
+					<li><a href="http://sciences.ucf.edu/biology/" target="_blank">Biology</a></li>
+					<li><a href="http://sciences.ucf.edu/chemistry/" target="_blank">Chemistry</a></li>
+					<li><a href="http://sciences.ucf.edu/communication/" target="_blank">Communication</a></li>
+					<li><a href="http://sciences.ucf.edu/math/" target="_blank">Mathematics</a></li>
+					<li><a href="http://sciences.ucf.edu/physics/" target="_blank">Physics</a></li>
+					<li><a href="http://sciences.ucf.edu/politicalscience/" target="_blank">Political Science</a></li>
+					<li><a href="http://sciences.ucf.edu/psychology/" target="_blank">Psychology</a></li>
+					<li><a href="http://sciences.ucf.edu/sociology/" target="_blank">Sociology</a></li>
+					<li><a href="http://sciences.ucf.edu/statistics/" target="_blank">Statistics</a></li>
 				</ul>
 			</div>
 		</div>

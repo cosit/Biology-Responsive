@@ -26,7 +26,7 @@ Template Name: People List
 					<?php show_people(); ?>
 							
 				<footer>
-					<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+					<?php edit_post_link( __( 'Edit', 'biology-department' ), '', '' ); ?>
 				</footer>
 			</article>
 		</div>		

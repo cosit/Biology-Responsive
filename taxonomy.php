@@ -22,10 +22,10 @@ get_header(); ?>
 
 					<?php the_content(); ?>
 							
-					<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'starkers' ), 'after' => '</nav>' ) ); ?>
+					<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'biology-department' ), 'after' => '</nav>' ) ); ?>
 							
 				<footer>
-					<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+					<?php edit_post_link( __( 'Edit', 'biology-department' ), '', '' ); ?>
 				</footer>
 			</article>
 		</div>

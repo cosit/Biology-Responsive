@@ -19,7 +19,7 @@
 
 
 	<?php if ( ! empty( $post->post_parent ) ) : ?>
-		<p><a href="<?php echo get_permalink( $post->post_parent ); ?>" title="<?php esc_attr( printf( __( 'Return to %s', 'starkers' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php /* translators: %s - title of parent post */ printf( __( '&larr; %s', 'starkers' ), get_the_title( $post->post_parent ) ); ?></a></p>
+		<p><a href="<?php echo get_permalink( $post->post_parent ); ?>" title="<?php esc_attr( printf( __( 'Return to %s', 'biology-department' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php /* translators: %s - title of parent post */ printf( __( '&larr; %s', 'biology-department' ), get_the_title( $post->post_parent ) ); ?></a></p>
 	<?php endif; ?>
 
 	<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -28,18 +28,18 @@
 			<h2><?php the_title(); ?></h2>
 
 			<?php
-				printf( __( 'By %2$s', 'starkers' ),
+				printf( __( 'By %2$s', 'biology-department' ),
 					'meta-prep meta-prep-author',
 					sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
 						get_author_posts_url( get_the_author_meta( 'ID' ) ),
-						sprintf( esc_attr__( 'View all posts by %s', 'starkers' ), get_the_author() ),
+						sprintf( esc_attr__( 'View all posts by %s', 'biology-department' ), get_the_author() ),
 						get_the_author()
 					)
 				);
 			?>
 			|
 			<?php
-				printf( __( 'Published %2$s', 'starkers' ),
+				printf( __( 'Published %2$s', 'biology-department' ),
 					'meta-prep meta-prep-entry-date',
 					sprintf( '<abbr title="%1$s">%2$s</abbr>',
 						esc_attr( get_the_time() ),
@@ -49,17 +49,17 @@
 				if ( wp_attachment_is_image() ) {
 					echo ' | ';
 					$metadata = wp_get_attachment_metadata();
-					printf( __( 'Full size is %s pixels', 'starkers' ),
+					printf( __( 'Full size is %s pixels', 'biology-department' ),
 						sprintf( '<a href="%1$s" title="%2$s">%3$s &times; %4$s</a>',
 							wp_get_attachment_url(),
-							esc_attr( __( 'Link to full-size image', 'starkers' ) ),
+							esc_attr( __( 'Link to full-size image', 'biology-department' ) ),
 							$metadata['width'],
 							$metadata['height']
 						)
 					);
 				}
 			?>
-			<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+			<?php edit_post_link( __( 'Edit', 'biology-department' ), '', '' ); ?>
 		</header>
 
 	<?php if ( wp_attachment_is_image() ) :
@@ -97,12 +97,12 @@
 				
 				<?php if ( !empty( $post->post_excerpt ) ) the_excerpt(); ?>
 
-				<?php the_content( __( 'Continue reading &rarr;', 'starkers' ) ); ?>
+				<?php the_content( __( 'Continue reading &rarr;', 'biology-department' ) ); ?>
 				
-				<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'starkers' ), 'after' => '</nav>' ) ); ?>
+				<?php wp_link_pages( array( 'before' => '<nav>' . __( 'Pages:', 'biology-department' ), 'after' => '</nav>' ) ); ?>
 
 				<footer>
-					<?php edit_post_link( __( 'Edit', 'starkers' ), ' ', '' ); ?>
+					<?php edit_post_link( __( 'Edit', 'biology-department' ), ' ', '' ); ?>
 				</footer>
 				
 			</article>

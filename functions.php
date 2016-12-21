@@ -30,8 +30,8 @@ function load_custom_script() {
     wp_register_script('modernizr', get_template_directory_uri().'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
 
-    wp_register_script('less', get_template_directory_uri().'/js/less-1.2.2.min.js');
-    wp_enqueue_script('less');
+    // wp_register_script('less', get_template_directory_uri().'/js/less-1.2.2.min.js');
+    // wp_enqueue_script('less');
 
     //This sets jQuery into no conflict mode    
     wp_enqueue_script('jquery.ui');
@@ -45,8 +45,10 @@ function load_custom_script() {
     	wp_enqueue_script('flexslider');
     }
 
-    wp_register_script('cos_mammals_ajax', get_template_directory_uri().'/js/cos_mammals_ajax.js');
-    wp_enqueue_script('cos_mammals_ajax');
+    wp_register_style('webfonts', get_template_directory_uri().'/webfonts/fonts.css' );
+    wp_enqueue_style('webfonts' );
+
+
 }
 
 function load_custom_style() {	}
@@ -55,99 +57,6 @@ add_action('wp_print_scripts', 'load_custom_script');
 add_action('wp_print_styles', 'load_custom_style');
 
 
-/***************
- * Ajax action
- **************/
-// If logged
-add_action('wp_ajax_cos_mammal_code', 'cos_mammal_populate_select');
-// If not logged in use this:
-add_action('wp_ajax_nopriv_cos_mammal_code', 'cos_mammal_populate_select');
-
-/**************************************
- * Code for  Ajax COS Mammal Functions
- **************************************/
-function cos_mammal_populate_select(){  
-  // Function call if the Infraclass select item is changed
-  echo cos_mammal_tax_filter($_POST['parentTax'], $_POST['parentTaxTitle'], $_POST['childTax']);
-  exit();
-}
-/**************************************************************
- * Ajax function for the Mammal Search functionality that creates a dropdown list of valid "child" taxonomy items based on the "parent" taxonomy's selection.  The taxonomies aren't actually hierarchical.
- **************************************************************/
-function cos_mammal_tax_filter($parentTaxSelected = "", $parentTax = 'cos_mammal_infraclass', $childTax = 'cos_mammal_order'){
-
-  // Gets a list of all the taxonomies  
-  $mammal_tax_args = array(
-   'orderby' => 'name',
-   'order'   => 'ASC',
-   'hide_empty'=> true    
-  );
-  $mammal_taxonomies = get_terms($childTax, $mammal_tax_args);
-
-  $valid_items = array();
-
-  if( ! empty( $mammal_taxonomies ) && ! is_wp_error( $mammal_taxonomies ) ){   
-  foreach ($mammal_taxonomies as $mammal_taxonomy) {
-    if(!empty($parentTaxSelected) ){
-      /* Loop through each taxonomy item and build a query to see if it has any items in common w/ the "parent" taxonomy */
-      $combo_args = array(
-       'post_type'       =>  'cos_mammals',
-       'posts_per_page'  =>  -1,
-       'tax_query'       =>  array(
-          'relation'    =>  'AND',
-          array(
-            'taxonomy'  =>  $parentTax,
-            'field'     =>  'slug',
-            'terms'     =>  $parentTaxSelected,
-          ),
-          array(
-            'taxonomy'  =>  $childTax,
-            'field'     =>  'slug',
-            'terms'     =>  $mammal_taxonomy->slug,
-          ),
-       ),
-      );
-    } else {
-      /* If the select item triggering the change doesn't have a value, i.e. "-Any ____-" then disable the "child" dropdown box */
-      $selectName = str_replace("cos_mammal_", "", $childTax);
-
-      ob_start();
-
-      echo "<select id='$childTax' name='mammal$selectName' class='mammal_types_drop form-control disabled' >";
-      echo  "<option value=''>-Any ".ucfirst($selectName)."-</option></select>";          
-
-      $Content = ob_get_clean();
-      return $Content;
-      exit();
-    }
-    $order_query = new WP_Query( $combo_args );
-
-    /* If common items are found then add that "child" taxonomy to an array of valid "child" taxonomies */
-    if($order_query->have_posts())
-      $valid_items[] = $mammal_taxonomy->name;
-   }
-
-   ob_start();
-   
-   /* If there are valid "child" taxonomies then create a Select dropdown list with them */
-   if(!empty($valid_items)){
-
-    $selectName = str_replace("cos_mammal_", "", $childTax);
-    
-    echo "<select id='$childTax' name='mammal$selectName' class='mammal_types_drop form-control' >";
-    echo  "<option value=''>-Any ".ucfirst($selectName)."-</option>";
-    foreach($valid_items as $valid_item){     
-      echo "<option value='".strtolower($valid_item)."'>".$valid_item."</option>";
-    }
-    echo "</select>";
-   }
-
-   $Content = ob_get_clean();
-  } else {
-   $Content = "There are no items found at this time";
-  }
-  return $Content;
-}
 
 
 /*****************************
@@ -539,10 +448,10 @@ function font_awesome_cpt_icons() {
 // * Custom Titles for CPTs that don't use Title field
 // *****************************************************
 function custom_titles($title) {
-	$postID = get_the_ID();
-	$postType = $_POST['post_type'];
+	$postID   = get_the_ID();
+	$postType = get_post_type( $postID );
 	
-	/* Note that the second field in the $_POST['fields'][***] item will vary from installation to installation */
+	/* Note that the second field in the $_POST['acf'][***] item will vary from installation to installation */
 	if( $postType == 'people' ){		
 		$title = $_POST['acf']['field_53da4bc98efb3'].' '.$_POST['acf']['field_53da4be28efb4'];
 	} elseif( $postType == 'slider' ){
@@ -551,9 +460,7 @@ function custom_titles($title) {
 		$title = $_POST['acf']['field_53da48bc88a0a'];
 	} elseif( $postType == 'social_media') {
 		$title = $_POST['acf']['field_53da6145129fa'];
-	} elseif ($postType == 'cos_mammals') {
-    $title = $_POST['acf']['field_547f18a090b4b'];
-  }
+	}
 
 	return $title;
 }
@@ -622,7 +529,7 @@ function cos_show_slider_items() {
 
 		$expires = trim(get_field('expires'));
 		$isExpired = $expires != '' ? 
-			( $expires < date(Ymd) ? true : false )
+			( $expires < date('Ymd') ? true : false )
 			: false;
 
     $sliderLinkTarget = "_self";
@@ -1013,309 +920,6 @@ function cos_show_classes($course_level){
 }
 // ******** End Classes CPT Info ********
 
-// ********************************
-// * Custom Post Type for Mammals
-// ********************************
-function cos_mammals() {
-  
-  $labels = array(
-    'name' => _x('Mammals', 'post type general name'),
-    'singular_name' => _x('Mammal', 'post type singular name'),
-    'add_new' => _x('Add New', 'mammal'),
-    'add_new_item' => __('Add New Mammal'),
-    'edit_item' => __('Edit Mammal Info'),
-    'new_item' => __('New Mammal'),
-    'all_items' => __('All Mammals'),
-    'view_item' => __('View Mammal'),
-    'search_items' => __('Search All Mammals'),
-    'not_found'  => __('No Mammals found.'),
-    'not_found_in_trash'  => __('No Mammals found in Trash.'),
-    'parent_item_colon' => '',
-    'menu_name'  => __('Mammals'),
-  );
-
-  $args = array(
-    'labels' => $labels,
-    'singular_label' => __('Mammal'),
-    'public' => true,
-    'show_ui' => true,
-    'capability_type' => 'post',
-    'hierarchical' => true,
-    'rewrite' => array( 'slug' => 'mammal' ),
-    'supports' => array('custom-fields'),
-    'taxonomies' => array('cos_mammal_infraclass, cos_mammal_order, cos_mammal_family, cos_mammal_genus'),
-  );
-
-  register_post_type( 'cos_mammals', $args );
-}
-add_action('init', 'cos_mammals');
-
-
-// **********************************************
-// * Custom taxonomies for Mammal classifications
-// **********************************************
-
-// *** Mammal Order *** //
-function cos_mammal_infraclass() {
-  // create a new taxonomy
-  register_taxonomy(
-    'cos_mammal_infraclass',
-    'cos_mammals',
-    array(
-      'labels' => array(
-        'name' => __('Infraclass'),
-        'add_new_item'  => __('Add New Infraclass'),
-        'parent_item'   => __('New Infraclass Parent'),
-        'search_items'  =>  __('Search Infraclass'),
-      ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => false, /*array( 'slug' => 'group' )*/
-
-    )
-  );
-}
-add_action( 'init', 'cos_mammal_infraclass' ); 
-
-// *** Mammal Order *** //
-function cos_mammal_order() {
-  $labels = array(
-
-  );
-  // create a new taxonomy
-  register_taxonomy(
-    'cos_mammal_order',
-    'cos_mammals',
-    array(
-      'labels' => array(
-        'name' => __('Order'),
-        'add_new_item'  => __('Add New Order'),
-        'parent_item'   => __('New Order Parent'),
-        'search_items'  =>  __('Search Order'),
-      ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => array( 'slug' => 'order' ),
-    )
-  );
-}
-add_action( 'init', 'cos_mammal_order' ); 
-
-// *** Mammal Family *** //
-function cos_mammal_family() {
-  // create a new taxonomy
-  register_taxonomy(
-    'cos_mammal_family',
-    'cos_mammals',
-    array(
-      'labels' => array(
-        'name'          => __('Family'),
-        'add_new_item'  => __('Add New Family'),
-        'parent_item'   => __('New Family Parent'),
-        'search_items'  => __('Search Family'),
-      ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => false, /*array( 'slug' => 'group' )*/
-    )
-  );
-}
-add_action( 'init', 'cos_mammal_family' ); 
-
-// *** Mammal Genus *** //
-function cos_mammal_genus() {
-  // create a new taxonomy
-  register_taxonomy(
-    'cos_mammal_genus',
-    'cos_mammals',
-    array(
-      'labels' => array(
-        'name'          => __('Genus'),
-        'add_new_item'  => __('Add New Genus'),
-        'parent_item'   => __('New Genus Parent'),
-        'search_items'  => __('Search Genus'),
-      ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => false, /*array( 'slug' => 'group' )*/
-    )
-  );
-}
-add_action( 'init', 'cos_mammal_genus' ); 
-
-/* Remove/hide the mammal taxonomy metaboxes from appearing
- * on the Mammals CPT page. This forces them to use the
- * ACF fields that will save to the taxonomy on creation/update
- */
-function remove_mammal_taxonomies(){
-  // Since we are using Hierarchical taxomies we must use {taxonomy_name}div
-  remove_meta_box('cos_mammal_infraclassdiv', 'cos_mammals', 'side' );
-  remove_meta_box('cos_mammal_orderdiv', 'cos_mammals', 'side' );
-  remove_meta_box('cos_mammal_familydiv', 'cos_mammals', 'side' );
-  remove_meta_box('cos_mammal_genusdiv', 'cos_mammals', 'side' );
-}
-add_action( 'admin_menu', 'remove_mammal_taxonomies' );
-
-// ******** End Mammals Taxonomy Info ********
-
-/* Displays the form for selecting the mammal Infraclass, 
- * Order, Family, and Genus
- */
-function cos_show_mammals(){
-
-  $mammal_infraclass_args = array(
-   'orderby' => 'name',
-   'order'   => 'ASC',
-   'hide_empty'=> true    
-  );
-  $mammal_infraclasses = get_terms('cos_mammal_infraclass', $mammal_infraclass_args);
-
-  $mammal_order_args = array(
-   'orderby' => 'name',
-   'order'   => 'ASC',
-   'hide_empty'=> true    
-  );
-  $mammal_orders = get_terms('cos_mammal_order', $mammal_order_args);
-
-  $mammal_family_args = array(
-   'orderby' => 'name',
-   'order'   => 'ASC',
-   'hide_empty'=> true    
-  );
-  $mammal_families = get_terms('cos_mammal_family', $mammal_family_args);
-
-  $mammal_genus_args = array(
-   'orderby' => 'name',
-   'order'   => 'ASC',
-   'hide_empty'=> true    
-  );
-  $mammal_genera = get_terms('cos_mammal_genus', $mammal_genus_args);  
-
-  ob_start();
-?>
-  <form action="<?php bloginfo('url'); ?>/mammal-results/" method="post" id="mammal_search">
-<?php
-
-  if(!empty($mammal_infraclasses)): 
-   echo "<h5>Select Infraclass:</h5>";
-   echo "<div id='infraclass_dropdown'><select id='cos_mammal_infraclass' name='mammalinfraclass' class='mammal_types_drop form-control'>";
-   echo  "<option value=''>-Any Infraclass-</option>";
-   foreach($mammal_infraclasses as $mammal_infraclass){     
-    echo "<option value='".$mammal_infraclass->slug."'>".$mammal_infraclass->name."</option>";
-   }
-   echo "</select></div>";
-  endif;
-
-  if(!empty($mammal_orders)): 
-   echo "<h5>Select Order:</h5>";
-   echo "<div id='order_dropdown'><select id='cos_mammal_order' name='mammalorder' class='mammal_types_drop form-control' disabled>";
-   echo  "<option value=''>-Any Order-</option>";
-   /*foreach($mammal_orders as $mammal_order){     
-    echo "<option value='".$mammal_order->slug."'>".$mammal_order->name."</option>";
-   }*/
-   echo "</select></div>";
-  endif;
-
-  if(!empty($mammal_families)): 
-   echo "<h5>Select Family:</h5>";    
-   echo "<div id='family_dropdown'><select id='cos_mammal_family' name='mammalfamily' class='mammal_types_drop form-control'  disabled>";
-   echo  "<option value=''>-Any Family-</option>";
-   /*foreach($mammal_families as $mammal_family){     
-    echo "<option value='".$mammal_family->slug."'>".$mammal_family->name."</option>";    
-   }*/
-   echo "</select></div>";
-  endif;  
-
-  if(!empty($mammal_genera)):  
-   echo "<h5>Select Genus:</h5>";    
-   echo "<div id='genus_dropdown'><select id='cos_mammal_genus' name='mammalgenus' class='mammal_types_drop form-control' disabled>";
-   echo  "<option value=''>-Any Genus-</option>";
-   /*foreach($mammal_genera as $mammal_genus){           
-    echo "<option value='".$mammal_genus->slug."'>".ucfirst($mammal_genus->slug)."</option>";     
-   } */  
-   echo "</select></div>";
-  endif;    
-
-   /*foreach($group_types as $group_type){
-    echo "<label for='type-".$group_type->slug."'>".$group_type->name."</label>";
-    echo "<input type='checkbox' name='type-".$group_type->slug."' value='".$term->name."' />";
-   }*/
-  if(!empty($mammal_orders) || !empty($mammal_families) || !empty($mammal_genera)){
-   echo ' <input type="submit" id="searchsubmit" value="Search Mammals" />
-   </form>';
-  }else{
-   echo "<p><strong>There are no Mammals at this time, please check back later</strong></p>";
-  }
-
-  echo "<hr/>";
-
-  $groupContent = ob_get_clean();
-  return $groupContent;
-}
-add_shortcode('show_cos_mammals', 'cos_show_mammals');
-
-
-/* Recursive funciton to loop through Mammal photos 
- * Takes in the server path and website path to files
- */
-function cos_mammal_pictures($base_dir, $normal_dir){  
-
-  $folder = $base_dir;
-  $normal_upload_dir = $normal_dir;
-
-  $photos_to_show .= "";    
-
-  if(is_dir($folder)){
-
-   // Scan the folder looking for photos or sub folders
-   $directory_photos = scandir($folder);    
-
-   // If there are photos or sub folders
-   if($directory_photos !== false){
-    
-    $photos_to_show .= "<div class='mammal_photo_container'>";
-
-    // Go through each entry looking for a photo or another folder
-    foreach ($directory_photos as $photo => $value) {     
-
-      // Remove the Previous and Up a Level entries 
-      if (!in_array($value,array(".",".."))){ 
-       
-       // If the entry is another folder recursively 
-       // call yourself with updated variables
-       if(is_dir($folder.$value)){                
-        $new_base   = $folder . $value."/";
-        $new_normal = $normal_upload_dir . $value."/"; 
-        $photos_to_show .=  "<h4>".ucwords($value)."</h4>".cos_mammal_pictures($new_base, $new_normal);
-       }
-       // If it's the full size image
-       elseif(strpos($value, '_sm') === false){
-        if(strpos($value, '.jpg') !== false || strpos($value, '.JPG') !== false)
-          $full_size_photo = $value;
-       }       
-       // If it's the thumbnail
-       elseif(strpos($value, '_sm') !== false){
-        $photos_to_show .=  "<a href='$normal_upload_dir$full_size_photo'><img src='$normal_upload_dir$value' class='specimen_photo'/></a> ";
-       }                   
-      }
-
-    } // Foreach      
-
-    $photos_to_show .= "</div>";
-   }
-  }
-  
-  return $photos_to_show; 
-}
-// ******** End Mammals CPT Info ********
 
 
 
@@ -1403,16 +1007,16 @@ function show_people_cats( $displayCats = true ) {
 				$peopleCatList .= '<li>';
 			}
 
-			$peopleCatList .= '<a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $cat->name) . '">' . $cat->name . '</a>';
+			$peopleCatList .= '<a href="' . esc_attr(get_term_link($cat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'biology-department'), $cat->name) . '">' . $cat->name . '</a>';
 			
 
 			// Add subcategories
 			foreach ($subCats as $subCat){
 				if( $subCat->parent == $cat->term_id ){
 					if( $has_subCats ){
-						$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
+						$peopleCatList .= '<li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'biology-department'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
 					} else {
-						$peopleCatList .= '<ul class="children"><li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'my_localization_domain'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
+						$peopleCatList .= '<ul class="children"><li><a href="' . esc_attr(get_term_link($subCat, 'people_cat' )) . '" title="' . sprintf(__('View All %s Members', 'biology-department'), $subCat->name) . '">' . $subCat->name . '</a></li>'; 
 						$has_subCats = true;
 					}
 				}
@@ -1450,6 +1054,8 @@ function show_person( $id ) {
     'person_phone'      => get_field('phone'),
     'person_location'   => get_field('location'),    
   );
+  $personPhoto  = "";
+  $office_hours = "";
 
   // Custom Post Type image must be set to "Image ID"
   $personPhoto = wp_get_attachment_image_src(get_field('headshot'), "people-custom-image");
@@ -1933,6 +1539,8 @@ function starkers_setup() {
 	// This theme uses post thumbnails
 	add_theme_support( 'post-thumbnails' );
 
+	add_theme_support( "title-tag" );
+
 	// Set custom Image Size for People Images
 	if ( function_exists( 'add_image_size' ) ) { 
 		add_image_size( 'people-custom-image', 250, 9999 );	
@@ -1958,7 +1566,7 @@ function starkers_setup() {
 
 	// Make theme available for translation
 	// Translations can be filed in the /languages/ directory
-	load_theme_textdomain( 'starkers', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'biology-department', get_template_directory() . '/languages' );
 
 	$locale = get_locale();
 	$locale_file = get_template_directory() . "/languages/$locale.php";
@@ -2020,16 +1628,16 @@ function starkers_comment( $comment, $args, $depth ) {
 	?>
 	<article <?php comment_class(); ?> id="comment-<?php comment_ID() ?>">
 			<?php echo get_avatar( $comment, 40 ); ?>
-			<?php printf( __( '%s says:', 'starkers' ), sprintf( '%s', get_comment_author_link() ) ); ?>
+			<?php printf( __( '%s says:', 'biology-department' ), sprintf( '%s', get_comment_author_link() ) ); ?>
 		<?php if ( $comment->comment_approved == '0' ) : ?>
-			<?php _e( 'Your comment is awaiting moderation.', 'starkers' ); ?>
+			<?php _e( 'Your comment is awaiting moderation.', 'biology-department' ); ?>
 			<br />
 		<?php endif; ?>
 
 		<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
 			<?php
 				/* translators: 1: date, 2: time */
-				printf( __( '%1$s at %2$s', 'starkers' ), get_comment_date(),  get_comment_time() ); ?></a><?php edit_comment_link( __( '(Edit)', 'starkers' ), ' ' );
+				printf( __( '%1$s at %2$s', 'biology-department' ), get_comment_date(),  get_comment_time() ); ?></a><?php edit_comment_link( __( '(Edit)', 'biology-department' ), ' ' );
 			?>
 
 		<?php comment_text(); ?>
@@ -2042,7 +1650,7 @@ function starkers_comment( $comment, $args, $depth ) {
 		case 'trackback' :
 	?>
 	<article <?php comment_class(); ?> id="comment-<?php comment_ID() ?>">
-		<p><?php _e( 'Pingback:', 'starkers' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'starkers'), ' ' ); ?></p>
+		<p><?php _e( 'Pingback:', 'biology-department' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'biology-department'), ' ' ); ?></p>
 	<?php
 			break;
 	endswitch;
@@ -2075,7 +1683,7 @@ if ( ! function_exists( 'starkers_posted_on' ) ) :
  * @since Starkers HTML5 3.0
  */
 function starkers_posted_on() {
-  printf( __( 'Posted on %2$s by %3$s', 'starkers' ),
+  printf( __( 'Posted on %2$s by %3$s', 'biology-department' ),
     'meta-prep meta-prep-author',
     sprintf( '<a href="%1$s" title="%2$s" rel="bookmark"><time datetime="%3$s" pubdate>%4$s</time></a>',
       get_permalink(),
@@ -2085,7 +1693,7 @@ function starkers_posted_on() {
     ),
     sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
       get_author_posts_url( get_the_author_meta( 'ID' ) ),
-      sprintf( esc_attr__( 'View all posts by %s', 'starkers' ), get_the_author() ),
+      sprintf( esc_attr__( 'View all posts by %s', 'biology-department' ), get_the_author() ),
       get_the_author()
     )
   );
@@ -2102,11 +1710,11 @@ function starkers_posted_in() {
   // Retrieves tag list of current post, separated by commas.
   $tag_list = get_the_tag_list( '', ', ' );
   if ( $tag_list ) {
-    $posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+    $posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'biology-department' );
   } elseif ( is_object_in_taxonomy( get_post_type(), 'category' ) ) {
-    $posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+    $posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'biology-department' );
   } else {
-    $posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'starkers' );
+    $posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'biology-department' );
   }
   // Prints the string, replacing the placeholders.
   printf(
@@ -2299,9 +1907,9 @@ function slug_set_reorder( $post_types ) {
 function starkers_widgets_init() {
 	// ***** Home Page Widget Areas ***** //
 	register_sidebar( array(
-		'name' => __( 'Front Page Slider Right', 'starkers' ),
+		'name' => __( 'Front Page Slider Right', 'biology-department' ),
 		'id' => 'front-slider-right-widget-area',
-		'description' => __( 'The right side of the slider area on the front page', 'starkers' ),
+		'description' => __( 'The right side of the slider area on the front page', 'biology-department' ),
 		'before_widget' => '',
 		'after_widget' => '',
 		'before_title' => '<h3>',
@@ -2309,9 +1917,9 @@ function starkers_widgets_init() {
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Front Page Left Column', 'starkers' ),
+		'name' => __( 'Front Page Left Column', 'biology-department' ),
 		'id' => 'front-left-widget-area',
-		'description' => __( 'The left side of the home page', 'starkers' ),
+		'description' => __( 'The left side of the home page', 'biology-department' ),
 		'before_widget' => '<div id="left_content">',
 		'after_widget' => '</div>',
 		'before_title' => '<h2>',
@@ -2319,9 +1927,9 @@ function starkers_widgets_init() {
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Front Page Right Column', 'starkers' ),
+		'name' => __( 'Front Page Right Column', 'biology-department' ),
 		'id' => 'front-right-widget-area',
-		'description' => __( 'The right side of the home page', 'starkers' ),
+		'description' => __( 'The right side of the home page', 'biology-department' ),
 		'before_widget' => '<div id="right_content">',
 		'after_widget' => '</div>',
 		'before_title' => '<h2>',
@@ -2329,9 +1937,9 @@ function starkers_widgets_init() {
 	) );
 
   register_sidebar( array(
-    'name' => __( 'Sidebar', 'starkers' ),
+    'name' => __( 'Sidebar', 'biology-department' ),
     'id' => 'primary-widget-area',
-    'description' => __( 'The primary sidebar widget area', 'starkers' ),
+    'description' => __( 'The primary sidebar widget area', 'biology-department' ),
     'before_widget' => '<li class="sidebar_widget">',
     'after_widget' => '</li>',
     'before_title' => '<h2>',
@@ -2339,9 +1947,9 @@ function starkers_widgets_init() {
   ) );
 
   register_sidebar( array(
-    'name' => __( 'Sidebar - Graduate Template', 'starkers' ),
+    'name' => __( 'Sidebar - Graduate Template', 'biology-department' ),
     'id' => 'graduate-sidebar-widget-area',
-    'description' => __( 'The sidebar widget area for the Graduate template', 'starkers' ),
+    'description' => __( 'The sidebar widget area for the Graduate template', 'biology-department' ),
     'before_widget' => '<aside><ul><li class="sidebar_widget">',
     'after_widget' => '</li></ul></aside>',
     'before_title' => '<h2>',
@@ -2349,9 +1957,9 @@ function starkers_widgets_init() {
   ) );  
 
   register_sidebar( array(
-    'name' => __( 'Sidebar - Undergraduate Template', 'starkers' ),
+    'name' => __( 'Sidebar - Undergraduate Template', 'biology-department' ),
     'id' => 'undergraduate-sidebar-widget-area',
-    'description' => __( 'The sidebar widget area for the Undergraduate template', 'starkers' ),
+    'description' => __( 'The sidebar widget area for the Undergraduate template', 'biology-department' ),
     'before_widget' => '<aside><ul><li class="sidebar_widget">',
     'after_widget' => '</li></ul></aside>',
     'before_title' => '<h2>',
@@ -2361,9 +1969,9 @@ function starkers_widgets_init() {
 
 	// ***** Sidebar Widget Area ***** //
 	register_sidebar( array(
-		'name' => __( 'Left Footer Widget Area', 'starkers' ),
+		'name' => __( 'Left Footer Widget Area', 'biology-department' ),
 		'id' => 'first-footer-widget-area',
-		'description' => __( 'The first footer widget area', 'starkers' ),
+		'description' => __( 'The first footer widget area', 'biology-department' ),
 		'before_widget' => '',
 		'after_widget' => '</div>',
 		'before_title' => '<h3 class="title">',
@@ -2371,9 +1979,9 @@ function starkers_widgets_init() {
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Center Footer Widget Area', 'starkers' ),
+		'name' => __( 'Center Footer Widget Area', 'biology-department' ),
 		'id' => 'second-footer-widget-area',
-		'description' => __( 'The second footer widget area', 'starkers' ),
+		'description' => __( 'The second footer widget area', 'biology-department' ),
 		'before_widget' => '',
 		'after_widget' => '</div>',
 		'before_title' => '<h3 class="title">',
@@ -2381,9 +1989,9 @@ function starkers_widgets_init() {
 	) );
 	
 	register_sidebar( array(
-		'name' => __( 'Right Footer Widget Area', 'starkers' ),
+		'name' => __( 'Right Footer Widget Area', 'biology-department' ),
 		'id' => 'third-footer-widget-area',
-		'description' => __( 'The third footer widget area', 'starkers' ),
+		'description' => __( 'The third footer widget area', 'biology-department' ),
 		'before_widget' => '',
 		'after_widget' => '</div>',
 		'before_title' => '<h3 class="title">',
@@ -2399,7 +2007,7 @@ add_action( 'widgets_init', 'starkers_widgets_init' );
 // *******************************************************
 function cos_increase_cache(){
   // Change the feed cache recreation period to 2 hours
-  return 7200; 
+  return 3600; 
 }
 // ********************* //
 
@@ -2488,7 +2096,7 @@ add_action('widgets_init', create_function('', 'register_widget("cos_events_widg
 function show_events($calID = 1, $numEvents = 10) {
 
   /* Include class-feed so SimplePie can be properly extended by out custom SimplePie. Call custom "Simplepie" class that we've created for the unique "<ucfevent:___>" tags found in the events.ucf.edu feed*/
-  include_once( ABSPATH . WPINC . '/class-feed.php' );
+  //include_once( ABSPATH . WPINC . '/class-feed.php' );
   include_once( get_template_directory() . '/simplepie_ucfevent.inc');
 
   $feed = 'http://events.ucf.edu/?calendar_id='.$calID.'&upcoming=upcoming&format=rss';
@@ -3174,6 +2782,7 @@ function cos_slider_columns($column){
   }elseif($column == 'person_classification'){
     $terms = wp_get_post_terms( $post->ID, 'people_cat', array("fields" => "names" ));    
     if(!empty($terms)){
+      $person_cats = "";
       foreach ($terms as $term => $value) {
         $person_cats .= " $value,";
       }
@@ -3225,6 +2834,7 @@ function cos_slider_columns($column){
   elseif($column == 'classes_level'){
     $terms = wp_get_post_terms( $post->ID, 'cos_classes_cat', array("fields" => "names" ));    
     if(!empty($terms)){
+      $classes_cat = "";
       foreach ($terms as $term => $value) {
         $classes_cat .= " $value,";
       }
@@ -3310,13 +2920,13 @@ add_shortcode('cos_giving_area', 'cos_giving_shortcode');
 // *************************
 // * Biology Styled Button *
 // *************************
-function cos_bio_button_shortcode( $atts ){
-  extract( shortcode_atts( array(
+function cos_bio_button_shortcode( $atts = [] ){
+  $atts =  shortcode_atts( array(
     'url'    => '',
     'text'   => '',    
     'float'  => '',
     'target' => '',
-  ), $atts ) );
+  ), $atts );
 
   switch( $atts['float'] ){
     case 'left':

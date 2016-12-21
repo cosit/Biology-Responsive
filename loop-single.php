@@ -20,7 +20,7 @@
 					
 			
 			<footer>
-				<?php edit_post_link( __( 'Edit', 'starkers' ), '', '' ); ?>
+				<?php edit_post_link( __( 'Edit', 'biology-department' ), '', '' ); ?>
 			</footer>
 				
 		</article>

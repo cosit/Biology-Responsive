@@ -41,16 +41,15 @@
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="icon" href="https://www.ucf.edu/img/pegasus-icon.png" type="image/png" />
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-<link rel="stylesheet/less" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/font-awesome.less" media="all">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/font-awesome.css" media="all">
 <!--[if IE 7]>
-<link rel="stylesheet/less" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/font-awesome-ie7.less" media="all">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/font-awesome-ie7.css" media="all">
 <![endif]--> 
-<link rel="stylesheet/less" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/layout.less" media="all">
 <!--[if gt IE 8]><!-->
-<link rel="stylesheet/less" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/responsive.less" media="all">
+<link rel="stylesheet/css" type="text/css" href="<?php echo get_template_directory_uri(); ?>/responsive.css" media="all">
 <!--<![endif]-->
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-<link rel="stylesheet/less" type="text/css" media="print" href="<?php echo get_template_directory_uri(); ?>/css/print.less">
+<link rel="stylesheet/css" type="text/css" media="print" href="<?php echo get_template_directory_uri(); ?>/print.css">
 
 <?php wp_head(); ?>
 <!--[if gt IE 8]><!-->

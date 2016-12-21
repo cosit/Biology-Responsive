@@ -14,7 +14,7 @@
 ?>
 
 <?php if ( post_password_required() ) : ?>
-				<p><?php _e( 'This post is password protected. Enter the password to view any comments.', 'starkers' ); ?></p>
+				<p><?php _e( 'This post is password protected. Enter the password to view any comments.', 'biology-department' ); ?></p>
 <?php
 		return;
 	endif;
@@ -27,14 +27,14 @@
 <?php if ( have_comments() ) : ?>
 			<?php /* STARKERS NOTE: The following h3 id is left intact so that comments can be referenced on the page */ ?>
 			<h3 id="comments-title"><?php
-			printf( _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'starkers' ),
+			printf( _n( 'One Response to %2$s', '%1$s Responses to %2$s', get_comments_number(), 'biology-department' ),
 			number_format_i18n( get_comments_number() ), '' . get_the_title() . '' );
 			?></h3>
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 	<nav>
-		<?php previous_comments_link( __( '&larr; Older Comments', 'starkers' ) ); ?>
-		<?php next_comments_link( __( 'Newer Comments &rarr;', 'starkers' ) ); ?>
+		<?php previous_comments_link( __( '&larr; Older Comments', 'biology-department' ) ); ?>
+		<?php next_comments_link( __( 'Newer Comments &rarr;', 'biology-department' ) ); ?>
 	</nav>
 <?php endif; // check for comment navigation ?>
 
@@ -44,8 +44,8 @@
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 	<nav>
-		<?php previous_comments_link( __( '&larr; Older Comments', 'starkers' ) ); ?>
-		<?php next_comments_link( __( 'Newer Comments &rarr;', 'starkers' ) ); ?>
+		<?php previous_comments_link( __( '&larr; Older Comments', 'biology-department' ) ); ?>
+		<?php next_comments_link( __( 'Newer Comments &rarr;', 'biology-department' ) ); ?>
 	</nav>
 <?php endif; // check for comment navigation ?>
 
@@ -53,7 +53,7 @@
 
 	if ( ! comments_open() ) :
 ?>
-	<p><?php _e( 'Comments are closed.', 'starkers' ); ?></p>
+	<p><?php _e( 'Comments are closed.', 'biology-department' ); ?></p>
 <?php endif; // end ! comments_open() ?>
 
 <?php endif; // end have_comments() ?>

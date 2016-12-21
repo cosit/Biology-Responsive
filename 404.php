@@ -15,7 +15,7 @@ get_header(); ?>
 	<?php get_search_form(); ?>
 	<div class="innerContent">
 			<article id="post-<?php the_ID(); ?>" class="not_found">
-				<header><h1><?php _e( 'Not Found', 'starkers' ); ?></h1></header>
+				<header><h1><?php _e( 'Not Found', 'biology-department' ); ?></h1></header>
 
 				<p>Looks like you happened upon the wrong page, sorry about that, give the rest of the site a shot. <a href=" <?php echo home_url( '/' ); ?> " class="bio-btn">Back to home</a></p>
 
