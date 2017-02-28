@@ -2016,7 +2016,7 @@ function cos_increase_cache(){
 // * COS Events Widget
 // *********************
 class cos_events_widget extends WP_Widget {
-	function cos_events_widget() {
+	public function __construct() {
 		// Widget settings
 		$widget_ops = array(
 			'classname' => 'COS Events Feed', 
@@ -2087,7 +2087,7 @@ class cos_events_widget extends WP_Widget {
  	}
 
 }
-add_action('widgets_init', create_function('', 'register_widget("cos_events_widget");'));
+add_action('widgets_init', create_function('', 'return register_widget("cos_events_widget");'));
 
 
 // ********************************************
@@ -2171,7 +2171,7 @@ add_action('show_events', 'show_events', 10, 2);
 // * COS News Widget
 // ****************************
 class cos_news_widget extends WP_Widget {
-	function cos_news_widget() {
+	public function __construct() {
 		// Widget settings
 		$widget_ops = array(
 			'classname' => 'COS News Feed', 
@@ -2200,8 +2200,8 @@ class cos_news_widget extends WP_Widget {
 
 		// Title of Widget
 		if( $title ){
-			echo $before_title . '<a href="http://sciences.ucf.edu/news/category/'.$instance['news_cat'].'">'. $title .'</a>';
-			echo "". $after_title."<a class='bio-btn' href='http://news.cos.ucf.edu/category/".$instance['news_cat']."'>All News)</a>";
+			echo $before_title . '<a href="https://sciences.ucf.edu/news/category/'.$instance['news_cat'].'">'. $title .'</a>';
+			echo "". $after_title."<a class='bio-btn' href='https://news.cos.ucf.edu/category/".$instance['news_cat']."'>All News)</a>";
 		}
 
 		// Widget Output
@@ -2274,7 +2274,7 @@ class cos_news_widget extends WP_Widget {
  	}
 
 }
-add_action('widgets_init', create_function('', 'register_widget("cos_news_widget");'));
+add_action('widgets_init', create_function('', 'return register_widget("cos_news_widget");'));
 
 
 // *********************************************
@@ -2283,7 +2283,7 @@ add_action('widgets_init', create_function('', 'register_widget("cos_news_widget
 function show_news( $cat, $items_to_show = 3 ) { ?>
 	<div class="news"> 		
 		<?php 				
-		$feed = "http://news.cos.ucf.edu/category/".$cat."/feed";			
+		$feed = "https://sciences.ucf.edu/news/category/".$cat."/feed";			
 		
 		// Set Feed cache to two hours
     add_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
@@ -2327,7 +2327,7 @@ function show_news_full() {
 	<div class="news">     	
 	<?php 
 
-	$feed = 'http://sciences.ucf.edu/news/?category_name='.get_option('COS_news_cat').'&feed=rss2'; // specify feed url	
+	$feed = 'https://sciences.ucf.edu/news/?category_name='.get_option('COS_news_cat').'&feed=rss2'; // specify feed url	
 
 	// Set Feed cache to two hours
   add_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
@@ -2356,7 +2356,7 @@ function show_news_full() {
 	<?php endforeach; 		
 	} 	?>
 
-	<h3 class="clear"><a href="http://sciences.ucf.edu/news/?category_name=<?php echo get_option('COS_news_cat'); ?>">Click here for more <?php echo get_bloginfo('name'); ?> news</a></h3>
+	<h3 class="clear"><a href="https://sciences.ucf.edu/news/?category_name=<?php echo get_option('COS_news_cat'); ?>">Click here for more <?php echo get_bloginfo('name'); ?> news</a></h3>
 </div> <?php
 }
 add_shortcode('show_news_full', 'show_news_full');
@@ -2366,7 +2366,7 @@ add_shortcode('show_news_full', 'show_news_full');
 // * COS Contact Widget
 // ******************************
 class cos_contact_widget extends WP_Widget {
-	function cos_contact_widget() {
+	public function __construct() {
 		// Widget settings
 		$widget_ops = array(
 			'classname' => 'COS Contact Info', 
@@ -2467,14 +2467,14 @@ class cos_contact_widget extends WP_Widget {
  		<?php 
  	}
 }
-add_action('widgets_init', create_function('', 'register_widget("cos_contact_widget");'));
+add_action('widgets_init', create_function('', 'return register_widget("cos_contact_widget");'));
 
 
 // **********************
 // * Office Hours Widget
 // **********************
 class cos_office_hours_widget extends WP_Widget {
-  function cos_office_hours_widget() {
+  public function __construct() {
     // Widget settings
     $widget_ops = array(
       'classname' => 'COS Office Hours', 
@@ -2529,7 +2529,7 @@ class cos_office_hours_widget extends WP_Widget {
     </p>
     <?php 
   }
-} add_action('widgets_init', create_function('', 'register_widget("cos_office_hours_widget");'));
+} add_action('widgets_init', create_function('', 'return register_widget("cos_office_hours_widget");'));
 
 // ***********************************************
 // * Show the Contact Info Area on the home page
@@ -2584,7 +2584,7 @@ add_action( 'show_contact_area', 'show_contact_area', 10, 1 );
 // * COS Did You Know Widget
 // ************************************
 class cos_dyk_widget extends WP_Widget {
-  function cos_dyk_widget() {
+  public function __construct() {
     // Widget settings
     $widget_ops = array(
       'classname'   => 'COS "Did You Know?" Widget', 
@@ -2653,7 +2653,7 @@ class cos_dyk_widget extends WP_Widget {
     <?php 
   }
 }
-add_action('widgets_init', create_function('', 'register_widget("cos_dyk_widget");'));
+add_action('widgets_init', create_function('', 'return register_widget("cos_dyk_widget");'));
 
 
 // ************************************
