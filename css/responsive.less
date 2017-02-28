@@ -236,6 +236,9 @@
 			>div.wrap>div.mainlink-item-4, >div.wrap>div.mainlink-item-5{ 
 				width: 23%;
 			}	
+			>div.wrap>div.mainlink-item-6, >div.wrap>div.mainlink-item-7{ 
+				width: 30%;
+			}	
 		}
 		.page-btn {
 			margin-top: -10px;
@@ -638,7 +641,7 @@
 		div.tabs{
 			width: 100%;		
 		}
-		h4.person_cv, h4.person_website{
+		h4.person_cv, h4.person_website {
 			padding: 0;
 			margin: 5px 0;
 			font-size: 1em;
@@ -655,8 +658,12 @@
 				width: 1.2em;
 			}
 		}
-		h4.person_cv:before{	content: "\f02d"; }
-		h4.person_website:before{	content: "\f0ac"; }
+		h4.person_cv {
+			::before {	content: "\f02d"; }
+		}
+		h4.person_website{
+			::before{	content: "\f0ac"; }
+		}
 	}
 }
 
@@ -824,6 +831,10 @@
 	body #sliders ul.slides li h2{ display: none; }
 	body #single_person #office_hrs > ul > li { width: 49%;  }
 	body #single_person #office_hrs > ul > li:nth-child(n+3) { margin: 2px 0.5%; }	
+	body #main_links>div.wrap>div.mainlink-item-6, 
+	body #main_links>div.wrap>div.mainlink-item-7 { 
+		width: 47%;		
+	}
 }	
 
 @media only screen and (max-width: 360px) {

@@ -46,7 +46,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/css/font-awesome-ie7.css" media="all">
 <![endif]--> 
 <!--[if gt IE 8]><!-->
-<link rel="stylesheet/css" type="text/css" href="<?php echo get_template_directory_uri(); ?>/responsive.css" media="all">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/responsive.css" media="all">
 <!--<![endif]-->
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 <link rel="stylesheet/css" type="text/css" media="print" href="<?php echo get_template_directory_uri(); ?>/print.css">

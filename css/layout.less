@@ -1100,6 +1100,7 @@ html[xmlns] .slides {display: block;}
 			color: #ffffff;
 			position: relative;
 			margin-top: 0px;
+			margin-bottom: 0;
 			height: 24px;
 			padding-top: 8px; 			
 			float: right;
@@ -2407,6 +2408,7 @@ html[xmlns] .slides {display: block;}
 			font-size: 90%;
 			line-height: 1;
 
+
 			&:before{
 				.iconfont; 
 				margin-right: 8px; 
@@ -2415,10 +2417,8 @@ html[xmlns] .slides {display: block;}
 				content: '';				
 				width: 1.2em;
 			}
-			&.person_cv:before 			{ content: "\f02d"; }
-			&.person_website:before 	{ content: "\f0ac"; }
-
-			
+			&.person_cv::before 		{ content: "\f02d"; }
+			&.person_website::before 	{ content: "\f0ac"; }		
 		}	
 		h4:hover {
 			background: #333333;			
