@@ -66,16 +66,16 @@
             <?php 
             // If there's a tagline / site description
             if(get_bloginfo('description')): ?>
-                <h1 style="font-size: <?php echo (get_field('cos_title_size', 'option')); ?>px;"><span class="branding_prefix"><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?> </span> 
+                <h1 ><span class="branding_prefix" <?php if(get_field('cos_title_size', 'option')) echo 'style="font-size:'.get_field('cos_title_size', 'option').'px !important;"'; ?> ><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?> </span> 
                 <a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home" class="dept_name">
-                <span class="<?php if(get_bloginfo('description')) echo 'branding_dept';?>"><?php bloginfo( 'name' ); ?></span></a>
+                <span class="<?php if(get_bloginfo('description')) echo 'branding_dept';?>" <?php if(get_field('cos_title_size', 'option')) echo 'style="font-size:'.get_field('cos_title_size', 'option').'px !important;"'; ?> ><?php bloginfo( 'name' ); ?></span></a>
                 </h1>
                 <?php if(get_bloginfo('description')) echo "<span id='tagline'>".get_bloginfo('description')."</a></span>"; ?>
 
             <?php else: ?>
-                <h1 <?php if(get_field('cos_title_size', 'option')) echo 'style="font-size:'.get_field('cos_title_size', 'option').'px !important;"'; ?> ><span class="branding_prefix"><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?> </span> 
+                <h1 ><span class="branding_prefix" <?php if(get_field('cos_title_size', 'option')) echo 'style="font-size:'.get_field('cos_title_size', 'option').'px !important;"'; ?>><?php echo "<a href=".$brandingLink.">".$brandingPrefix."</a>" ; ?> </span> 
                 <a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home" class="dept_name">
-                <span class="<?php if(get_bloginfo('description')) echo 'branding_dept';?>"><?php bloginfo( 'name' ); ?></span></a>
+                <span class="<?php if(get_bloginfo('description')) echo 'branding_dept';?>" <?php if(get_field('cos_title_size', 'option')) echo 'style="font-size:'.get_field('cos_title_size', 'option').'px !important;"'; ?> ><?php bloginfo( 'name' ); ?></span></a>
                 </h1>                
             <?php endif; ?>
             <div class="nav-mobile"><i class="icon-reorder"></i></div>
