@@ -21,9 +21,9 @@
  
     global $page, $paged;
 
-    $thisDept = get_bloginfo('name');
+    $thisDept       = get_bloginfo('name');
     $brandingPrefix = get_field('cos_title_prefix', 'option');
-    $brandingLink = '';
+    $brandingLink   = '';
 
     if($brandingPrefix == "COS")
         $brandingLink = "http://www.cos.ucf.edu/";
@@ -31,11 +31,11 @@
         $brandingLink = "http://www.ucf.edu"; 
     else{
         $brandingPrefix = "UCF";
-        $brandingLink = "http://www.ucf.edu"; 
+        $brandingLink   = "http://www.ucf.edu"; 
     }
 
-    if(!is_home()){ wp_title( '', true, 'left' ); echo " - "; } 
-        echo $brandingPrefix . ' ' . $thisDept;         
+    if( !is_home() && !is_front_page() ){ wp_title( '', true, 'left' ); } 
+    else { echo $brandingPrefix . ' ' . $thisDept;          }          
  
 ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />

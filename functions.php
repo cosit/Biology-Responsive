@@ -15,8 +15,7 @@ add_action( 'init', 'register_my_menus' );
 function register_my_menus() {
 	register_nav_menus( 
     array(
-      'primary-menu' => __( 'Primary Menu'),
-      
+      'primary-menu' => __( 'Primary Menu'),      
     )
   );
 }
@@ -29,9 +28,6 @@ function load_custom_script() {
 
     wp_register_script('modernizr', get_template_directory_uri().'/js/modernizr-1.6.min.js');
     wp_enqueue_script('modernizr');
-
-    // wp_register_script('less', get_template_directory_uri().'/js/less-1.2.2.min.js');
-    // wp_enqueue_script('less');
 
     //This sets jQuery into no conflict mode    
     wp_enqueue_script('jquery.ui');
@@ -48,15 +44,12 @@ function load_custom_script() {
     wp_register_style('webfonts', get_template_directory_uri().'/webfonts/fonts.css' );
     wp_enqueue_style('webfonts' );
 
-
 }
 
 function load_custom_style() {	}
 
 add_action('wp_print_scripts', 'load_custom_script');
 add_action('wp_print_styles', 'load_custom_style');
-
-
 
 
 /*****************************
@@ -120,7 +113,7 @@ function add_googleanalytics(){
  ************************/
 if( function_exists('acf_add_options_page') ) {
  
-  $page = acf_add_options_page(array(
+  $option_page = acf_add_options_page(array(
     'page_title'  => 'Theme General Settings',
     'menu_title'  => 'Theme Settings',
     'menu_slug'   => 'theme-general-settings',
@@ -306,12 +299,12 @@ function breadcrumbs() {
  
     if ( is_category() ) {
       global $wp_query;
-      $cat_obj = $wp_query->get_queried_object();
-      $thisCat = $cat_obj->term_id;
-      $thisCat = get_category($thisCat);
-      $parentCat = get_category($thisCat->parent);
+      $cat_obj    = $wp_query->get_queried_object();
+      $thisCat    = $cat_obj->term_id;
+      $thisCat    = get_category($thisCat);
+      $parentCat  = get_category($thisCat->parent);
       if ($thisCat->parent != 0) echo(get_category_parents($parentCat, TRUE, ' ' . $delimiter . ' '));
-      echo $before . 'Archive by category "' . single_cat_title('', false) . '"' . $after;
+      echo $before . 'Category "' . single_cat_title('', false) . '"' . $after;
  
     } elseif ( is_day() ) {
       echo '<a href="' . get_year_link(get_the_time('Y')) . '">' . get_the_time('Y') . '</a> ' . $delimiter . ' ';
@@ -386,11 +379,9 @@ function breadcrumbs() {
       echo __('Page') . ' ' . get_query_var('paged');
       if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) echo ')';
     }
- 
     echo '<a class="mobile_menu" href="#page_nav">=</a></div>';
   }
 } 
-
 
 
 // **********************************************
@@ -438,7 +429,6 @@ function font_awesome_cpt_icons() {
     font-size: 18px !important;
   } 
 
-  
 </style>
 <?php
 }
@@ -474,29 +464,29 @@ function slider() {
 	$labels = array(
 		'name' => _x('Slides', 'post type general name'),
 		'singular_name' => _x('Slider Item', 'post type singular name'),
-		'add_new' => _x('Add New', 'slider'),
-		'add_new_item' => __('Add New Slider Item'),
-		'edit_item' => __('Edit Slider Item'),
-		'new_item' => __('New Slider Item'),
-		'all_items' => __('All Slides'),
-		'view_item' => __('View Slider Item'),
-		'search_items' => __('Search Slides'),
-		'not_found'  => __('No slider items found.'),
-		'not_found_in_trash'  => __('No slider items found in Trash.'),
+		'add_new' 		=> _x('Add New', 'slider'),
+		'add_new_item' 	=> __('Add New Slider Item'),
+		'edit_item' 	=> __('Edit Slider Item'),
+		'new_item' 		=> __('New Slider Item'),
+		'all_items' 	=> __('All Slides'),
+		'view_item' 	=> __('View Slider Item'),
+		'search_items' 	=> __('Search Slides'),
+		'not_found'  	=> __('No slider items found.'),
+		'not_found_in_trash'=> __('No slider items found in Trash.'),
 		'parent_item_colon' => '',
-		'menu_name'  => __('Slides'),
+		'menu_name'  	=> __('Slides'),
 	);
 
 	$args = array(
-		'labels' => $labels,
-		'singular_label' => __('Slider Item'),
-		'public' => true,
-		'show_ui' => true,
+		'labels' 		=> $labels,
+		'singular_label'=> __('Slider Item'),
+		'public' 		=> true,
+		'show_ui' 		=> true,
 		'capability_type' => 'post',		
-		'hierarchical' => true,
-		'rewrite' => true,
+		'hierarchical' 	=> true,
+		'rewrite' 		=> true,
 		'exclude_from_search' => true,
-		'supports' => array('custom-fields'),
+		'supports' 		=> array('custom-fields'),
 	);
 
 	register_post_type( 'slider', $args );
@@ -535,17 +525,17 @@ function cos_show_slider_items() {
     $sliderLinkTarget = "_self";
 
 		$slide = array(
-			'title' => get_field('title'),
-			'content' => '',
-			'image' => get_field('image'),
-      'full_size_banner' => get_field('full_size_banner'),
-			'page' => get_field('page'),
+			'title' 	=> get_field('title'),
+			'content' 	=> '',
+			'image' 	=> get_field('image'),
+      'full_size_banner'=> get_field('full_size_banner'),
+			'page' 		=> get_field('page'),
 			'file_link' => get_field('file_link'),
 			'external_link' => get_field('external_link'),
 			//'position' => ucwords( get_field('position') ),
 			'is_disabled' => get_field('disabled') ,
-			'is_expired' => $isExpired, // TRUE if expired
-			'edit' => get_edit_post_link( $thisID ),			
+			'is_expired'  => $isExpired, // TRUE if expired
+			'edit' 		=> get_edit_post_link( $thisID ),			
 		);
 
     // Assign the slide image to another variable for easier use.  
@@ -619,7 +609,7 @@ function mainLink() {
 		'rewrite'           => true,
 		'exclude_from_search' => true,
 		'supports'            => array('custom-fields'),
-    'taxonomies'          => array('cos_mainlinks_cat'),
+    	'taxonomies'          => array('cos_mainlinks_cat'),
 	);
 	register_post_type( 'mainlink', $args );
 }
@@ -711,13 +701,13 @@ function cos_show_main_links( $location = 'main-links' ) {
 		$thisID = get_the_ID();
 
 		$mainLink = array(
-			'title' => get_field('title'),
-			'link' => get_field('link'),
+			'title' 	=> get_field('title'),
+			'link' 		=> get_field('link'),
 			'file_link' => get_field('file_link'),
 			'external_link' => get_field('external_link'),
-			'image' => get_field('image'),
-			'slice' => ucwords(get_field('slice')),
-			'open' => get_field('open'),
+			'image' 	=> get_field('image'),
+			'slice' 	=> ucwords(get_field('slice')),
+			'open' 		=> get_field('open'),
 		);
 
 		//Link to an Internal File
@@ -748,30 +738,30 @@ function cos_show_main_links( $location = 'main-links' ) {
 // ************************************
 function social_media() {
 	$labels = array(
-		'name' => _x('Social Media', 'post type general name'),
+		'name' 			=> _x('Social Media', 'post type general name'),
 		'singular_name' => _x('Social Media Item', 'post type singular name'),
-		'add_new' => _x('Add New', 'slider'),
-		'add_new_item' => __('Add New Social Media Item'),
-		'edit_item' => __('Edit Social Media Info'),
-		'new_item' => __('New Social Media Item'),
-		'all_items' => __('All Social Media'),
-		'view_item' => __('View Social Media Item'),
-		'search_items' => __('Search All Social Media'),
-		'not_found'  => __('No social media found.'),
-		'not_found_in_trash'  => __('No social media found in Trash.'),
+		'add_new' 		=> _x('Add New', 'slider'),
+		'add_new_item' 	=> __('Add New Social Media Item'),
+		'edit_item' 	=> __('Edit Social Media Info'),
+		'new_item' 		=> __('New Social Media Item'),
+		'all_items' 	=> __('All Social Media'),
+		'view_item' 	=> __('View Social Media Item'),
+		'search_items' 	=> __('Search All Social Media'),
+		'not_found'  	=> __('No social media found.'),
+		'not_found_in_trash'=> __('No social media found in Trash.'),
 		'parent_item_colon' => '',
-		'menu_name'  => __('Social Media'),
+		'menu_name'  	=> __('Social Media'),
 	);
 	$args = array(
-		'labels' => $labels,
-		'singular_label' => __('Social Media Item'),
-		'public' => true,
-		'show_ui' => true,
+		'labels' 		=> $labels,
+		'singular_label'=> __('Social Media Item'),
+		'public' 		=> true,
+		'show_ui' 		=> true,
 		'capability_type' => 'post',
-		'hierarchical' => true,
-		'rewrite' => true,
+		'hierarchical' 	=> true,
+		'rewrite' 		=> true,
 		'exclude_from_search' => true,
-		'supports' => array('custom-fields'),
+		'supports' 		=> array('custom-fields'),
 	);
 
 	register_post_type( 'social_media', $args );
@@ -801,10 +791,10 @@ function cos_show_social() {
 			$thisID = get_the_ID();
 
 			$social = array(
-				'label' => get_field('label'),
-				'type' => get_field('type'),
-				'link' => get_field('link'),
-				'disabled' => get_field('disabled'),
+				'label' 	=> get_field('label'),
+				'type' 		=> get_field('type'),
+				'link'		=> get_field('link'),
+				'disabled'	=> get_field('disabled'),
 			);
 
 			echo <<<SOCIAL
@@ -827,19 +817,19 @@ SOCIAL;
 // ********************************
 function cos_classes_cpt() {
   $labels = array(
-    'name' => _x('Classes', 'post type general name'),
+    'name' 			=> _x('Classes', 'post type general name'),
     'singular_name' => _x('Class', 'post type singular name'),
-    'add_new' => _x('Add New', 'classes'),
-    'add_new_item' => __('Add New Class'),
-    'edit_item' => __('Edit Class'),
-    'new_item' => __('New Class'),
-    'all_items' => __('All Classes'),
-    'view_item' => __('View Class'),
-    'search_items' => __('Search Classes'),
-    'not_found'  => __('No Classes found.'),
-    'not_found_in_trash'  => __('No Classes found in Trash.'),
+    'add_new' 		=> _x('Add New', 'classes'),
+    'add_new_item' 	=> __('Add New Class'),
+    'edit_item' 	=> __('Edit Class'),
+    'new_item' 		=> __('New Class'),
+    'all_items' 	=> __('All Classes'),
+    'view_item' 	=> __('View Class'),
+    'search_items' 	=> __('Search Classes'),
+    'not_found'  	=> __('No Classes found.'),
+    'not_found_in_trash'=> __('No Classes found in Trash.'),
     'parent_item_colon' => '',
-    'menu_name'  => __('Classes'),
+    'menu_name'  	=> __('Classes'),
   );
 
   $args = array(
@@ -868,12 +858,12 @@ function cos_classes_cat() {
     'cos_classes_cat',
     'classes',
     array(
-      'label' => __( 'Course Level' ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => false, /*array( 'slug' => 'group' )*/
+      'label'		=> __( 'Course Level' ),
+      'sort' 		=> true,
+      'hierarchical'=> true,
+      'args' 		=> array( 'orderby' => 'term_order' ),
+      'query_var' 	=> true,
+      'rewrite' 	=> false, /*array( 'slug' => 'group' )*/
     )
   );
 }
@@ -911,7 +901,6 @@ function cos_show_classes($course_level){
       
     echo "</p>";
 
-
   endwhile; 
 
   else: echo "<blockquote>There are no classes at this time</blockquote>";
@@ -929,31 +918,31 @@ function cos_show_classes($course_level){
 function people() {
   
   $labels = array(
-    'name' => _x('People', 'post type general name'),
+    'name' 			=> _x('People', 'post type general name'),
     'singular_name' => _x('Person', 'post type singular name'),
-    'add_new' => _x('Add New', 'slider'),
-    'add_new_item' => __('Add New Person'),
-    'edit_item' => __('Edit Person Info'),
-    'new_item' => __('New Person'),
-    'all_items' => __('All People'),
-    'view_item' => __('View Person'),
-    'search_items' => __('Search All People'),
-    'not_found'  => __('No people found.'),
-    'not_found_in_trash'  => __('No people found in Trash.'),
-    'parent_item_colon' => '',
-    'menu_name'  => __('People'),
+    'add_new' 		=> _x('Add New', 'slider'),
+    'add_new_item' 	=> __('Add New Person'),
+    'edit_item' 	=> __('Edit Person Info'),
+    'new_item' 		=> __('New Person'),
+    'all_items' 	=> __('All People'),
+    'view_item' 	=> __('View Person'),
+    'search_items' 	=> __('Search All People'),
+    'not_found'  	=> __('No people found.'),
+    'not_found_in_trash'	=> __('No people found in Trash.'),
+    'parent_item_colon' 	=> '',
+    'menu_name'  	=> __('People'),
   );
 
   $args = array(
-    'labels' => $labels,
-    'singular_label' => __('Person'),
-    'public' => true,
-    'show_ui' => true,
-    'capability_type' => 'post',
-    'hierarchical' => true,
-    'rewrite' => array( 'slug' => 'faculty' ),
-    'supports' => array('custom-fields', 'revisions'),
-    'taxonomies' => array('people_cat'),
+    'labels' 	=> $labels,
+    'singular_label' 	=> __('Person'),
+    'public' 	=> true,
+    'show_ui' 	=> true,
+    'capability_type' 	=> 'post',
+    'hierarchical' 		=> true,
+    'rewrite' 	=> array( 'slug' => 'faculty' ),
+    'supports' 	=> array('custom-fields', 'revisions'),
+    'taxonomies'=> array('people_cat'),
   );
 
   register_post_type( 'people', $args );
@@ -970,12 +959,12 @@ function people_cat() {
     'people_cat',
     'people',
     array(
-      'label' => __( 'Classifications' ),
-      'sort' => true,
-      'hierarchical' => true,
-      'args' => array( 'orderby' => 'term_order' ),
-      'query_var' => true,
-      'rewrite' => false, /*array( 'slug' => 'group' )*/
+      'label' 		=> __( 'Classifications' ),
+      'sort' 		=> true,
+      'hierarchical'=> true,
+      'args' 		=> array( 'orderby' => 'term_order' ),
+      'query_var' 	=> true,
+      'rewrite' 	=> false, /*array( 'slug' => 'group' )*/
     )
   );
 }
@@ -1139,9 +1128,6 @@ function show_person( $id ) {
   $person_website = get_field('personal_website');
   $person_specialty  = get_field('research_area');      
 
-
-
-
   $contentTabs .= '</ul>';
 
   // Display person photo and "Person Basics"
@@ -1164,7 +1150,6 @@ function show_person( $id ) {
     ";
   }        
   echo "</article>";
-
 
 }
 
@@ -1227,27 +1212,27 @@ function show_people( $catID = 0 ) {
 
 	if( $catID ){
 		$facultyArgs = array( 
-			'posts_per_page' => -1,
-			'tax_query' => array(
+			'posts_per_page'	=> -1,
+			'tax_query' 		=> array(
 				array(
-					'taxonomy' => 'people_cat',
-					'field' => 'slug',
-					'terms' => $catID,
+					'taxonomy' 	=> 'people_cat',
+					'field' 	=> 'slug',
+					'terms' 	=> $catID,
 					//Only shows current Cat, doesn't show people in its sub cats
 					'include_children' => FALSE, 
 				)
 			),
-			'orderby' => 'meta_value',
-      'meta_key' => 'last_name',
-			'order' => 'ASC',
+			'orderby' 	=> 'meta_value',
+      		'meta_key' 	=> 'last_name',
+			'order' 	=> 'ASC',
 		);
 	} else {
 		$facultyArgs = array( 
-			'post_type' => 'people',
-			'posts_per_page' => -1,
-			'orderby' => 'meta_value',
-      'meta_key' => 'last_name',
-			'order' => 'ASC',
+			'post_type' 	=> 'people',
+			'posts_per_page'=> -1,
+			'orderby' 		=> 'meta_value',
+      		'meta_key' 		=> 'last_name',
+			'order' 		=> 'ASC',
 		);
 	}
 
@@ -1265,16 +1250,15 @@ function show_people( $catID = 0 ) {
 		if(empty($personPhoto))
 			$personPhoto = wp_get_attachment_image_src(get_field('headshot'), 'small' );		
 
-
 		$personLink =  get_permalink();
 		$personFirstName = get_field('first_name');
-		$personLastName = get_field('last_name');
+		$personLastName  = get_field('last_name');
 
 		$person = array(					
-			'position'    => get_field('position'),
-			'location'    => get_field('location'),
-			'phone'       => get_field('phone'),
-			'email'       => antispambot(get_field('email')),				
+			'position'	=> get_field('position'),
+			'location'  => get_field('location'),
+			'phone'		=> get_field('phone'),
+			'email'		=> antispambot(get_field('email')),				
 		);
 
 		if($person['email'] === "N/A")
@@ -1325,9 +1309,9 @@ function show_office_hours( $is_sidebar=true ) {
     $is_sidebar = false;
   }
   $officeHoursArgs = array( 
-    'post_type' => 'people',
-    'people_cat' => 0,
-    'posts_per_page' => -1,
+    'post_type' 	=> 'people',
+    'people_cat' 	=> 0,
+    'posts_per_page'=> -1,
   );
   $my_query = new WP_Query( $officeHoursArgs );
 
@@ -1527,7 +1511,6 @@ function person_toolbar( $person ){
 }
 
 
-
 // ****************************
 // * Default theme setup info
 // ****************************
@@ -1544,14 +1527,14 @@ function starkers_setup() {
 	// Set custom Image Size for People Images
 	if ( function_exists( 'add_image_size' ) ) { 
 		add_image_size( 'people-custom-image', 250, 9999 );	
-    add_image_size( 'people-custom-image-thumb', 250, 250, array('center','top') ); 
+    	add_image_size( 'people-custom-image-thumb', 250, 250, array('center','top') ); 
 		add_filter( 'image_size_names_choose', 'custom_image_sizes_choose' );
 	}
 	
 	function custom_image_sizes_choose( $sizes ) {
 		$custom_sizes = array(
-			'people-custom-image' => 'Person Image',
-      'people-custom-image-thumb' => 'Person Image Thumbnail'
+			'people-custom-image' 		=> 'Person Image',
+      		'people-custom-image-thumb' => 'Person Image Thumbnail'
 		);
 		return array_merge( $sizes, $custom_sizes );
 	}
@@ -1642,7 +1625,7 @@ function starkers_comment( $comment, $args, $depth ) {
 
 		<?php comment_text(); ?>
 
-			<?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+		<?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 
 	<?php
 			break;
@@ -1748,7 +1731,6 @@ return $fields;
 add_filter('comment_form_default_fields','starkers_fields');
 
 
-
 // ***************************
 // * Dashboard Cusomtizations 
 // ***************************
@@ -1832,7 +1814,7 @@ function wpc_dashboard_widgets() {
 		unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
 		// Plugins
 		unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
-	//Side Column Widgets
+		//Side Column Widgets
 		//Quick Press
 		unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
 		//Recent Drafts
@@ -1893,7 +1875,6 @@ function slug_set_reorder( $post_types ) {
 }
 
 
-
 // *****************************************************
 // **************************************************
 // * Widgets and Widget Related Functions
@@ -1907,95 +1888,95 @@ function slug_set_reorder( $post_types ) {
 function starkers_widgets_init() {
 	// ***** Home Page Widget Areas ***** //
 	register_sidebar( array(
-		'name' => __( 'Front Page Slider Right', 'biology-department' ),
-		'id' => 'front-slider-right-widget-area',
-		'description' => __( 'The right side of the slider area on the front page', 'biology-department' ),
+		'name' 			=> __( 'Front Page Slider Right', 'biology-department' ),
+		'id' 			=> 'front-slider-right-widget-area',
+		'description' 	=> __( 'The right side of the slider area on the front page', 'biology-department' ),
 		'before_widget' => '',
-		'after_widget' => '',
-		'before_title' => '<h3>',
-		'after_title' => '</h3>',
+		'after_widget' 	=> '',
+		'before_title' 	=> '<h3>',
+		'after_title' 	=> '</h3>',
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Front Page Left Column', 'biology-department' ),
-		'id' => 'front-left-widget-area',
-		'description' => __( 'The left side of the home page', 'biology-department' ),
+		'name' 			=> __( 'Front Page Left Column', 'biology-department' ),
+		'id' 			=> 'front-left-widget-area',
+		'description' 	=> __( 'The left side of the home page', 'biology-department' ),
 		'before_widget' => '<div id="left_content">',
-		'after_widget' => '</div>',
-		'before_title' => '<h2>',
-		'after_title' => '</h2>',
+		'after_widget' 	=> '</div>',
+		'before_title' 	=> '<h2>',
+		'after_title' 	=> '</h2>',
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Front Page Right Column', 'biology-department' ),
-		'id' => 'front-right-widget-area',
-		'description' => __( 'The right side of the home page', 'biology-department' ),
+		'name' 			=> __( 'Front Page Right Column', 'biology-department' ),
+		'id' 			=> 'front-right-widget-area',
+		'description' 	=> __( 'The right side of the home page', 'biology-department' ),
 		'before_widget' => '<div id="right_content">',
-		'after_widget' => '</div>',
-		'before_title' => '<h2>',
-		'after_title' => '</h2>',
+		'after_widget' 	=> '</div>',
+		'before_title' 	=> '<h2>',
+		'after_title' 	=> '</h2>',
 	) );
 
-  register_sidebar( array(
-    'name' => __( 'Sidebar', 'biology-department' ),
-    'id' => 'primary-widget-area',
-    'description' => __( 'The primary sidebar widget area', 'biology-department' ),
-    'before_widget' => '<li class="sidebar_widget">',
-    'after_widget' => '</li>',
-    'before_title' => '<h2>',
-    'after_title' => '</h2>',
+	register_sidebar( array(
+	    'name' 			=> __( 'Sidebar', 'biology-department' ),
+	    'id' 			=> 'primary-widget-area',
+	    'description' 	=> __( 'The primary sidebar widget area', 'biology-department' ),
+	    'before_widget' => '<li class="sidebar_widget">',
+	    'after_widget' 	=> '</li>',
+	    'before_title' 	=> '<h2>',
+	    'after_title' 	=> '</h2>',
   ) );
 
-  register_sidebar( array(
-    'name' => __( 'Sidebar - Graduate Template', 'biology-department' ),
-    'id' => 'graduate-sidebar-widget-area',
-    'description' => __( 'The sidebar widget area for the Graduate template', 'biology-department' ),
-    'before_widget' => '<aside><ul><li class="sidebar_widget">',
-    'after_widget' => '</li></ul></aside>',
-    'before_title' => '<h2>',
-    'after_title' => '</h2>',
-  ) );  
+	register_sidebar( array(
+		'name' 			=> __( 'Sidebar - Graduate Template', 'biology-department' ),
+		'id' 			=> 'graduate-sidebar-widget-area',
+		'description' 	=> __( 'The sidebar widget area for the Graduate template', 'biology-department' ),
+		'before_widget' => '<aside><ul><li class="sidebar_widget">',
+		'after_widget' 	=> '</li></ul></aside>',
+		'before_title' 	=> '<h2>',
+		'after_title' 	=> '</h2>',
+	) );  
 
-  register_sidebar( array(
-    'name' => __( 'Sidebar - Undergraduate Template', 'biology-department' ),
-    'id' => 'undergraduate-sidebar-widget-area',
-    'description' => __( 'The sidebar widget area for the Undergraduate template', 'biology-department' ),
-    'before_widget' => '<aside><ul><li class="sidebar_widget">',
-    'after_widget' => '</li></ul></aside>',
-    'before_title' => '<h2>',
-    'after_title' => '</h2>',
-  ) );  
+	register_sidebar( array(
+		'name' 			=> __( 'Sidebar - Undergraduate Template', 'biology-department' ),
+		'id' 			=> 'undergraduate-sidebar-widget-area',
+		'description' 	=> __( 'The sidebar widget area for the Undergraduate template', 'biology-department' ),
+		'before_widget' => '<aside><ul><li class="sidebar_widget">',
+		'after_widget' 	=> '</li></ul></aside>',
+		'before_title' 	=> '<h2>',
+		'after_title' 	=> '</h2>',
+	) );  
 
 
 	// ***** Sidebar Widget Area ***** //
 	register_sidebar( array(
-		'name' => __( 'Left Footer Widget Area', 'biology-department' ),
-		'id' => 'first-footer-widget-area',
-		'description' => __( 'The first footer widget area', 'biology-department' ),
+		'name' 			=> __( 'Left Footer Widget Area', 'biology-department' ),
+		'id' 			=> 'first-footer-widget-area',
+		'description' 	=> __( 'The first footer widget area', 'biology-department' ),
 		'before_widget' => '',
-		'after_widget' => '</div>',
-		'before_title' => '<h3 class="title">',
-		'after_title' => '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
+		'after_widget' 	=> '</div>',
+		'before_title' 	=> '<h3 class="title">',
+		'after_title' 	=> '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
 	) );
 
 	register_sidebar( array(
-		'name' => __( 'Center Footer Widget Area', 'biology-department' ),
-		'id' => 'second-footer-widget-area',
-		'description' => __( 'The second footer widget area', 'biology-department' ),
+		'name' 			=> __( 'Center Footer Widget Area', 'biology-department' ),
+		'id' 			=> 'second-footer-widget-area',
+		'description' 	=> __( 'The second footer widget area', 'biology-department' ),
 		'before_widget' => '',
-		'after_widget' => '</div>',
-		'before_title' => '<h3 class="title">',
-		'after_title' => '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
+		'after_widget' 	=> '</div>',
+		'before_title' 	=> '<h3 class="title">',
+		'after_title' 	=> '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
 	) );
 	
 	register_sidebar( array(
-		'name' => __( 'Right Footer Widget Area', 'biology-department' ),
-		'id' => 'third-footer-widget-area',
-		'description' => __( 'The third footer widget area', 'biology-department' ),
+		'name' 			=> __( 'Right Footer Widget Area', 'biology-department' ),
+		'id' 			=> 'third-footer-widget-area',
+		'description' 	=> __( 'The third footer widget area', 'biology-department' ),
 		'before_widget' => '',
-		'after_widget' => '</div>',
-		'before_title' => '<h3 class="title">',
-		'after_title' => '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
+		'after_widget' 	=> '</div>',
+		'before_title' 	=> '<h3 class="title">',
+		'after_title' 	=> '<i class="icon-double-angle-down"></i></h3><div class="footerWidgetDiv">',
 	) );
 }
 /** Register sidebars by running starkers_widgets_init() on the widgets_init hook. */
@@ -2019,8 +2000,8 @@ class cos_events_widget extends WP_Widget {
 	public function __construct() {
 		// Widget settings
 		$widget_ops = array(
-			'classname' => 'COS Events Feed', 
-			'description' => 'Shows events feed of specific COS Department',
+			'classname'    => 'UCF Events Feed', 
+			'description'  => 'Shows event feed of specific events.ucf.edu calendar.',
 		);
 
 		// Widget control settings
@@ -2030,7 +2011,7 @@ class cos_events_widget extends WP_Widget {
 
 		parent::__construct(
 			'cos_events_widget', 
-			'COS Events Feed',
+			'UCF Events Feed',
 			$widget_ops,
 			$control_ops
 		);
@@ -2038,8 +2019,9 @@ class cos_events_widget extends WP_Widget {
 
 	function widget( $args, $instance ){
 		extract( $args );
-		$title = apply_filters('widget_title', $instance['title']); // widget title
-		$id = $instance['id'];
+		$title 		= apply_filters('widget_title', $instance['title']);
+		$id 		= $instance['id'];
+    	$backup_id  = $instance['backup_id'];
 		$num_events = $instance['num_events'];
 
 		// Before Widget
@@ -2051,22 +2033,23 @@ class cos_events_widget extends WP_Widget {
 		}
 
 		// Widget Output
-		do_action( 'show_events', $id, $num_events );
+		do_action( 'show_events', $id, $backup_id, $num_events, false );
 
 		// After Widget
 		echo '</div>' . $after_widget;
 	}
 
 	function update($new_instance, $old_instance) {
-			$instance['title'] = strip_tags($new_instance['title']);
-			$instance['id'] = strip_tags($new_instance['id']);
-			$instance['num_events'] = strip_tags($new_instance['num_events']);
-			return $instance;
+		$instance['title'] 	= strip_tags($new_instance['title']);
+		$instance['id']    	= strip_tags($new_instance['id']);
+    	$instance['backup_id']  = strip_tags($new_instance['backup_id']);
+		$instance['num_events'] = strip_tags($new_instance['num_events']);
+		return $instance;
 	}
 
 		// Widget Control Panel //
 	function form( $instance ) {
- 		$defaults = array( 'title' => 'Events', 'id' => 1, 'num_events' => 5 );
+ 		$defaults = array( 'title' => 'Events', 'id' => 719, 'backup_id' => 1, 'num_events' => 5 );
  		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
  		<p>
@@ -2078,7 +2061,10 @@ class cos_events_widget extends WP_Widget {
  			<label for="<?php echo $this->get_field_id('id'); ?>">Calendar ID:</label>
  			<input class="widefat" id="<?php echo $this->get_field_id('id'); ?>" name="<?php echo $this->get_field_name('id'); ?>'" type="text" value="<?php echo $instance['id']; ?>" />
  		</p>
-
+	    <p>
+	      	<label for="<?php echo $this->get_field_id('backup_id'); ?>">Backup Calendar ID: <em>(When main calendar is empty)</em></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('backup_id'); ?>" name="<?php echo $this->get_field_name('backup_id'); ?>'" type="text" value="<?php echo $instance['backup_id']; ?>" />
+		</p>
  		<p>
  			<label for="<?php echo $this->get_field_id('num_events'); ?>">Number of events to display:</label>
  			<input class="widefat" id="<?php echo $this->get_field_id('num_events'); ?>" name="<?php echo $this->get_field_name('num_events'); ?>'" type="text" value="<?php echo $instance['num_events']; ?>" />
@@ -2093,78 +2079,91 @@ add_action('widgets_init', create_function('', 'return register_widget("cos_even
 // ********************************************
 // * Show events via Widget on Home Page
 // ********************************************
-function show_events($calID = 1, $numEvents = 10) {
+function show_events( $calID = 719, $backupID = 1, $numEvents = 10, $isBackup = false ) {
 
-  /* Include class-feed so SimplePie can be properly extended by out custom SimplePie. Call custom "Simplepie" class that we've created for the unique "<ucfevent:___>" tags found in the events.ucf.edu feed*/
-  //include_once( ABSPATH . WPINC . '/class-feed.php' );
-  include_once( get_template_directory() . '/simplepie_ucfevent.inc');
+	// Defaults if fields are left empty or register null
+	if( $calID === "" )     $calID = 719;
+	if( $isBackup === false ){
+		if( $backupID === "" )  $backupID = 719;
+	}
 
-  $feed = 'http://events.ucf.edu/?calendar_id='.$calID.'&upcoming=upcoming&format=rss';
-  $maxitems = 0;
+	/* Call custom "Simplepie" class that ew've created for the unique "<ucfevent:___>" tags found in the events.ucf.edu feed.  Make sure events.ucf.edu is added to the WP Allowed Hosts whitelist */
+	include_once( get_template_directory() . '/simplepie_ucfevent.inc');
 
-  // Set Feed cache to two hours
-  add_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
-  $rss = fetch_feed($feed);
-  remove_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
+	$feed = 'http://events.ucf.edu/?calendar_id='.$calID.'&upcoming=upcoming&format=rss';
+	$maxitems = 0;
 
-  // Check for errors before setting custom class items
-  if(!is_wp_error($rss)){
+	// Set Feed cache to two hours
+	add_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
+	$rss = fetch_feed($feed);
+	remove_filter( 'wp_feed_cache_transient_lifetime' , 'cos_increase_cache' );
 
-    // Set our custom item class that we imported above
-    $rss->set_item_class('SimplePie_Item_UCFEvent');
-    $rss->enable_order_by_date(false);   
-    $maxitems = $rss->get_item_quantity($numEvents); 
+	// Check for errors before setting custom class items
+	if(!is_wp_error($rss)){
 
-    // Check if the current calendar feed is empty
-    if($maxitems == 0){
+	    // Set our custom item class that we imported above
+	    $rss->set_item_class('SimplePie_Item_UCFEvent');
+	    $rss->enable_order_by_date(false);   
+	    $maxitems = $rss->get_item_quantity($numEvents); 
+	    // Trim out possible extra text from Calendar title
+	    $currentDescription = str_replace(" - Today's Events", "", $rss->get_description());
 
-      // If so, default to the main UCF calendar
-      $feed = 'http://events.ucf.edu/?calendar_id=1&upcoming=upcoming&format=rss'; 
-      $rss = fetch_feed($feed);
-      echo "<p class='no_events'>There are no ".get_bloginfo('name')." Department events at this time.  Check out the <a href='http://events.ucf.edu/?calendar_id=1&upcoming=upcoming' target='_blank'>UCF Events Calendar</a> below for upcoming events</p>";
-    }  
-  }
-  if(!is_wp_error($rss)){    
-    
-    // Set our custom item class that we imported above
-    $rss->set_item_class('SimplePie_Item_UCFEvent');
-    $rss->enable_order_by_date(false);   
+	    // If the feed is empty
+	    if( $maxitems === 0 ){
 
-    $maxitems = $rss->get_item_quantity($numEvents); 
+	        $calID = $backupID;   
+	        // If the main feed is empty, run again using the backup
+	        if( $isBackup === false ){
+	         	echo "<p class='no_events'>There are no ".$currentDescription." events at this time. "; 
+	          	show_events( $calID, "", $numEvents, true ); 
+	        } 
+	        // If this is the backup feed & it's empty, check to see if the backup is the UCF Calendar.  If not, run again with the UCF calendar, and set the backup to the UCF calendar.
+	        elseif ($isBackup === true ){
+	          	if( $backupID !== "1" )
+	            	show_events( "1", "1", $numEvents, true ); 
+	          	// End the recursive looping
+	          	else
+	            	echo " Please check back later.</p>";
+	        }
 
-    $items = $rss->get_items(0, $maxitems);
-    echo('<a href="http://events.ucf.edu/?calendar_id='.$calID.'&upcoming=upcoming" target="_blank">View Full Calendar</a>');
-    foreach ($items as $item) : ?>
-      <article>
-        <span class="eventDate"><?php echo substr($item->get_startdate(),5,11); ?></span>
-        <ul class="eventInfo">
-          <li class="eventTitle"><a href="<?php  echo $item->get_permalink(); ?>" title="<?php echo $item->get_title(); ?>" target="_blank" 
-            <?php echo ( substr($item->get_title(),0,40)==$item->get_title()?
-              '>'.$item->get_title()
-              :' class="expandEventTitle">'.substr($item->get_title(),0,40).'...' ); ?>
-          </a></li>
-          <li class="eventTime"><?php 
-            if($item->get_starttime() === $item->get_endtime())
-              echo "ALL DAY";
-            else
-              echo $item->get_starttime()." - ".$item->get_endtime();
-          ?></li>         
-          <li class="eventLocation"><?php 
-            $location = $item->get_location(); 
-            if($location['mapurl'] !== '')
-              echo "<a href='".$location['mapurl']."'>".$location['location']."</a>";
-            else
-              echo $location['location'];
-           ?></li>
-        </ul>
-      </article> 
-      <?php 
-    endforeach;   
-  } else {
-    echo "<hr style='width:90%;'><p class='no_events'>Unable to retrieve events from the calendar.  Please try again later.</p>";    
-  }
+	    } else {
+	      	// If there are items and this is the backup feed
+	      	if( $isBackup === true )
+	        	echo "Check out the <a href='http://events.ucf.edu/?calendar_id=".$calID."&upcoming=upcoming' target='_blank'>".$currentDescription."</a> calendar below for upcoming events.</p>";
+	       
+			$items = $rss->get_items(0, $maxitems);
+		    // View Full Calendar link
+		    echo('<a href="http://events.ucf.edu/?calendar_id='.$calID.'&upcoming=upcoming" target="_blank">View Full Calendar</a>');
+		    foreach ($items as $item) : ?>
+		    	<article>
+	        	<span class="eventDate"><?php echo substr($item->get_startdate(),5,11); ?></span>
+	          	<ul class="eventInfo">
+	            	<li class="eventTitle"><a href="<?php  echo $item->get_permalink(); ?>" title="<?php echo $item->get_title(); ?>" target="_blank" <?php echo ( substr($item->get_title(),0,40) == $item->get_title() ? '>'.$item->get_title() :' class="expandEventTitle">'.substr($item->get_title(),0,40).'...' ); ?></a></li>
+		            <li class="eventTime"><?php 
+		              if($item->get_starttime() === $item->get_endtime())
+		                echo "ALL DAY";
+		              else
+		                echo $item->get_starttime()." - ".$item->get_endtime();
+		            ?></li>         
+		            <li class="eventLocation">
+		            <?php 
+		            	$location = $item->get_location(); 
+		              	if($location['mapurl'] !== '')
+		                	echo "<a href='".$location['mapurl']."'>".$location['location']."</a>";
+		              	else
+		                	echo $location['location'];
+		            ?></li>
+	          	</ul>
+	        	</article> 
+	        <?php 
+	      	endforeach;   
+	    }
+	}
+  	else {
+    	echo "<hr style='width:90%;'><p class='no_events'>Unable to retrieve events from the calendar.  Please try again later.</p>";    
+  	}
 }
-add_action('show_events', 'show_events', 10, 2);
+add_action('show_events', 'show_events', 10, 4);
 
 
 // ****************************

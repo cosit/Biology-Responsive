@@ -9,8 +9,6 @@
  
 get_header(); ?>
  
-<!-- Contact box - not a section because it lies on top of slider -->
-
 <div id="contactContainer">	
 	
 	<form role="search" method="get" id="<?php echo 'inner_'; ?>searchform" class="<?php echo 'home_search ';?>" action="<?php echo home_url( '/' ); ?>" >
@@ -18,11 +16,9 @@ get_header(); ?>
             <input type="text" value="Search <?php bloginfo( 'name' ); ?>..." name="s" id="s" onfocus="this.value=(this.value=='Search <?php bloginfo( 'name' ); ?>...') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search <?php bloginfo( 'name' ); ?>...' : this.value;"/>
         </div>
 	</form>		
-	<?php //show_contact_area(); ?>
 	<?php if ( is_active_sidebar( 'front-slider-right-widget-area' ) ) : ?>
 		<?php dynamic_sidebar( 'front-slider-right-widget-area' ); ?>
-	<?php endif; ?>
-	
+	<?php endif; ?>	
 </div>
 
 
