@@ -5,6 +5,27 @@
  * @package WordPress
  */
 
+// *********************************************
+// * Include ACF in theme settings
+// *********************************************
+add_filter('acf/settings/path', 'my_acf_settings_path');
+function my_acf_settings_path( $path ) {
+    // Local dev path
+    //$path = 'C:/wamp/www/cos/wp-content/themes/cos-responsive-main/acf/';
+    $path = get_stylesheet_directory() . '/acf/';
+    return $path;    
+}
+add_filter('acf/settings/dir', 'my_acf_settings_dir');
+function my_acf_settings_dir( $dir ) {
+    // Local dev path
+    //$dir = 'C:/wamp/www/cos/wp-content/themes/cos-responsive-main/acf/';
+    $dir = get_stylesheet_directory_uri() . '/acf/';
+    return $dir;
+}
+// Local dev path
+//include_once( 'C:/wamp/www/cos/wp-content/themes/cos-responsive-main/acf/acf.php' );
+include_once( get_stylesheet_directory() . '/acf/acf.php' );
+
 /** Tell WordPress to run starkers_setup() when the 'after_setup_theme' hook is run. */
 add_action( 'after_setup_theme', 'starkers_setup' );
 
