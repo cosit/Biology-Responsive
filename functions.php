@@ -2018,80 +2018,79 @@ function cos_increase_cache(){
 // * COS Events Widget
 // *********************
 class cos_events_widget extends WP_Widget {
-	public function __construct() {
-		// Widget settings
-		$widget_ops = array(
-			'classname'    => 'UCF Events Feed', 
-			'description'  => 'Shows event feed of specific events.ucf.edu calendar.',
-		);
+  public function __construct() {
+    // Widget settings
+    $widget_ops = array(
+      'classname'    => 'UCF Events Feed', 
+      'description'  => 'Shows event feed of specific events.ucf.edu calendar.',
+    );
 
-		// Widget control settings
-		$control_ops = array(
-			'id_base' => 'cos_events_widget',
-		);
+    // Widget control settings
+    $control_ops = array(
+      'id_base' => 'cos_events_widget',
+    );
 
-		parent::__construct(
-			'cos_events_widget', 
-			'UCF Events Feed',
-			$widget_ops,
-			$control_ops
-		);
-	}
+    parent::__construct(
+      'cos_events_widget', 
+      'UCF Events Feed',
+      $widget_ops,
+      $control_ops
+    );
+  }
 
-	function widget( $args, $instance ){
-		extract( $args );
-		$title 		= apply_filters('widget_title', $instance['title']);
-		$id 		= $instance['id'];
-    	$backup_id  = $instance['backup_id'];
-		$num_events = $instance['num_events'];
+  function widget( $args, $instance ){
+    extract( $args );
+    $title = apply_filters('widget_title', $instance['title']); // widget title
+    $id = $instance['id'];
+    $backup_id  = $instance['backup_id'];
+    $num_events = $instance['num_events'];
 
-		// Before Widget
-		echo $before_widget;
+    // Before Widget
+    echo $before_widget;
 
-		// Title of Widget
-		if( $title ){
-			echo '<div class="events">' . $before_title . $title . $after_title;
-		}
+    // Title of Widget
+    if( $title ){
+      echo '<div class="events">' . $before_title . $title . $after_title;
+    }
 
-		// Widget Output
-		do_action( 'show_events', $id, $backup_id, $num_events, false );
+    // Widget Output
+    do_action( 'show_events', $id, $backup_id, $num_events, false );
 
-		// After Widget
-		echo '</div>' . $after_widget;
-	}
+    // After Widget
+    echo '</div>' . $after_widget;
+  }
 
-	function update($new_instance, $old_instance) {
-		$instance['title'] 	= strip_tags($new_instance['title']);
-		$instance['id']    	= strip_tags($new_instance['id']);
-    	$instance['backup_id']  = strip_tags($new_instance['backup_id']);
-		$instance['num_events'] = strip_tags($new_instance['num_events']);
-		return $instance;
-	}
+  function update($new_instance, $old_instance) {
+      $instance['title'] = strip_tags($new_instance['title']);
+      $instance['id']    = strip_tags($new_instance['id']);
+      $instance['backup_id']  = strip_tags($new_instance['backup_id']);
+      $instance['num_events'] = strip_tags($new_instance['num_events']);
+      return $instance;
+  }
 
-		// Widget Control Panel //
-	function form( $instance ) {
- 		$defaults = array( 'title' => 'Events', 'id' => 719, 'backup_id' => 1, 'num_events' => 5 );
- 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
+    // Widget Control Panel //
+  function form( $instance ) {
+    $defaults = array( 'title' => 'Events', 'id' => 719, 'backup_id' => 1, 'num_events' => 5 );
+    $instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
- 		<p>
- 			<label for="<?php echo $this->get_field_id('title'); ?>">Title:</label>
- 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>'" type="text" value="<?php echo $instance['title']; ?>" />
- 		</p>
+    <p>
+      <label for="<?php echo $this->get_field_id('title'); ?>">Title:</label>
+      <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>'" type="text" value="<?php echo $instance['title']; ?>" />
+    </p>
 
- 		<p>
- 			<label for="<?php echo $this->get_field_id('id'); ?>">Calendar ID:</label>
- 			<input class="widefat" id="<?php echo $this->get_field_id('id'); ?>" name="<?php echo $this->get_field_name('id'); ?>'" type="text" value="<?php echo $instance['id']; ?>" />
- 		</p>
-	    <p>
-	      	<label for="<?php echo $this->get_field_id('backup_id'); ?>">Backup Calendar ID: <em>(When main calendar is empty)</em></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('backup_id'); ?>" name="<?php echo $this->get_field_name('backup_id'); ?>'" type="text" value="<?php echo $instance['backup_id']; ?>" />
-		</p>
- 		<p>
- 			<label for="<?php echo $this->get_field_id('num_events'); ?>">Number of events to display:</label>
- 			<input class="widefat" id="<?php echo $this->get_field_id('num_events'); ?>" name="<?php echo $this->get_field_name('num_events'); ?>'" type="text" value="<?php echo $instance['num_events']; ?>" />
- 		</p>
- 		<?php 
- 	}
+    <p>
+      <label for="<?php echo $this->get_field_id('id'); ?>">Calendar ID:</label>
+      <input class="widefat" id="<?php echo $this->get_field_id('id'); ?>" name="<?php echo $this->get_field_name('id'); ?>'" type="text" value="<?php echo $instance['id']; ?>" />
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id('backup_id'); ?>">Backup Calendar ID: <em>(When main calendar is empty)</em></label>
+        <input class="widefat" id="<?php echo $this->get_field_id('backup_id'); ?>" name="<?php echo $this->get_field_name('backup_id'); ?>'" type="text" value="<?php echo $instance['backup_id']; ?>" />
+    <p>
+      <label for="<?php echo $this->get_field_id('num_events'); ?>">Number of events to display:</label>
+      <input class="widefat" id="<?php echo $this->get_field_id('num_events'); ?>" name="<?php echo $this->get_field_name('num_events'); ?>'" type="text" value="<?php echo $instance['num_events']; ?>" />
+    </p>
+    <?php 
+  }
 
 }
 add_action('widgets_init', create_function('', 'return register_widget("cos_events_widget");'));
